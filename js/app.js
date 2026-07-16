@@ -392,12 +392,12 @@ document.addEventListener('alpine:init', () => {
        curated stock placeholders standing in until real stills/reels are
        available (swap `type` to 'video' and add a `video` URL then). */
     projects: [
-      { id: 1, type: 'image', category: 'Feature Film', title: 'Iewduh', image: 'https://images.unsplash.com/photo-1517824806704-9040b037703b?q=80&w=1200&auto=format&fit=crop', alt: 'Placeholder still for the feature film Iewduh' },
-      { id: 2, type: 'image', category: 'Feature Film', title: 'Lorni – The Flaneur', image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=1200&auto=format&fit=crop', alt: 'Placeholder still for the feature film Lorni, The Flaneur' },
+      { id: 1, type: 'image', category: 'Feature Film', title: 'Iewduh', image: 'images/poster/Iewduh.jpeg', alt: 'Poster for the feature film Iewduh' },
+      { id: 2, type: 'image', category: 'Feature Film', title: 'Lorni – The Flaneur', image: 'images/poster/Lorni_The_Flaneur.jpg', alt: 'Poster for the feature film Lorni, The Flaneur' },
       { id: 3, type: 'image', category: 'Feature Film', title: 'Rwai Ka Shara', image: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?q=80&w=1200&auto=format&fit=crop', alt: 'Placeholder still for the feature film Rwai Ka Shara' },
       { id: 4, type: 'image', category: 'Short Film', title: 'Ka Jingshemphang (The Knowing)', image: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=1200&auto=format&fit=crop', alt: 'Placeholder still for the short film Ka Jingshemphang, selected and considered for festival screenings' },
-      { id: 5, type: 'image', category: 'Documentary', title: 'Hills on a Plate', image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop', alt: 'Placeholder still for the food and travel series Hills on a Plate, on JioHotstar' },
-      { id: 6, type: 'image', category: 'Music Video', title: 'Shillong Chamber Choir', image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?q=80&w=1200&auto=format&fit=crop', alt: 'Placeholder still for a Shillong Chamber Choir music video' },
+      { id: 5, type: 'image', category: 'Documentary', title: 'Hills on a Plate', image: 'images/poster/Hillsontheplate.webp', alt: 'Poster for the food and travel series Hills on a Plate, on JioHotstar' },
+      { id: 6, type: 'image', category: 'Music Video', title: 'Shillong Chamber Choir', image: 'images/poster/ShilongChamberchoir.jpg', alt: 'Poster for a Shillong Chamber Choir music video' },
       { id: 7, type: 'image', category: 'Documentary', title: 'Living Root Bridges', image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop', alt: 'Placeholder image documenting the Living Root Bridges of Meghalaya' },
       { id: 8, type: 'image', category: 'Documentary', title: 'IFAD × NESFAS: Food & Indigenous Knowledge', image: 'https://images.unsplash.com/photo-1523301343968-6a6ebf63c672?q=80&w=1200&auto=format&fit=crop', alt: 'Placeholder image for documentation work with IFAD and NESFAS on food, agriculture and indigenous knowledge' },
       { id: 9, type: 'image', category: 'Campaign', title: 'Brand Campaigns', image: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=1200&auto=format&fit=crop', alt: 'Placeholder image representing commercial campaigns for Toyota, NEXA, Ather, Wild Stone and Unilever Ayush' },
@@ -700,71 +700,6 @@ document.addEventListener('alpine:init', () => {
       // axios.delete(`/api/milestones/${id}`).then(() => { this.milestones = this.milestones.filter(m => m.id !== id); });
       this.milestones = this.milestones.filter(m => m.id !== id);
       if (this.active === id) this.active = null;
-    },
-  }));
-
-  /**
-   * Contact form — state, inline validation, and a stubbed submit handler.
-   *
-   * Fields validate on blur (not on every keystroke, which reads as
-   * impatient) and re-validate live once a field has already been touched.
-   *
-   * Laravel migration notes:
-   * - Replace the setTimeout stub in submitForm() with:
-   *     axios.post('/api/contact', this.form)
-   *       .then(() => { this.status = 'success'; this.resetForm(); })
-   *       .catch((err) => { this.status = 'error'; this.applyServerErrors(err.response.data.errors); });
-   * - `status` can drive server-validation error states once wired up
-   *   (Laravel 422 responses) via applyServerErrors().
-   * - CSRF: once this is a Blade view, add @csrf inside the <form> or send
-   *   the X-XSRF-TOKEN header via axios.
-   */
-  Alpine.data('contactForm', () => ({
-    form: { name: '', email: '', subject: '', message: '' },
-    touched: { name: false, email: false, subject: false, message: false },
-    status: 'idle', // idle | submitting | success | error
-
-    errorFor(field) {
-      if (!this.touched[field]) return '';
-      const value = this.form[field].trim();
-      if (!value) return 'This field is required.';
-      if (field === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        return 'Enter a valid email address.';
-      }
-      return '';
-    },
-
-    touch(field) {
-      this.touched[field] = true;
-    },
-
-    get isValid() {
-      return Object.keys(this.form).every(field => {
-        const value = this.form[field].trim();
-        if (!value) return false;
-        if (field === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        return true;
-      });
-    },
-
-    submitForm() {
-      Object.keys(this.touched).forEach(field => { this.touched[field] = true; });
-      if (!this.isValid) return;
-
-      this.status = 'submitting';
-
-      // TODO (Laravel migration): replace this stub with a real API call,
-      // see the component doc comment above.
-      setTimeout(() => {
-        console.log('Contact form payload (stub):', this.form);
-        this.status = 'success';
-        this.resetForm();
-      }, 900);
-    },
-
-    resetForm() {
-      this.form = { name: '', email: '', subject: '', message: '' };
-      this.touched = { name: false, email: false, subject: false, message: false };
     },
   }));
 

@@ -37,6 +37,14 @@
   --c-scrollbar-thumb: 212 212 216;
 }
 
+/* Theme-swapped image pairs — pick the dark-theme or light-theme asset via
+   [data-theme], mirroring the color-token inversion above for non-color
+   assets (logo mark, hero photo) that can't be handled with currentColor. */
+.theme-img-dark { display: block; }
+.theme-img-light { display: none; }
+[data-theme="light"] .theme-img-dark { display: none; }
+[data-theme="light"] .theme-img-light { display: block; }
+
 html {
   scrollbar-width: thin;
   scrollbar-color: rgb(var(--c-scrollbar-thumb)) rgb(var(--c-black));
