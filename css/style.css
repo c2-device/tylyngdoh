@@ -1,0 +1,166 @@
+/* Base page styles — kept minimal since Tailwind (CDN) handles most utility styling. */
+
+/* Theme tokens, fed into Tailwind's color config as rgb(var(--x) / <alpha-value>)
+   (see the tailwind.config `colors` block in index.html) — this is what makes
+   every bg-black/text-bone/border-white/etc. utility in the markup theme-aware
+   without touching a single class. Light mode is a literal invert: black
+   (surfaces) becomes the off-white "bone", and bone/white (foreground accents)
+   become near-black — matching each token's existing role in the design.
+   Photos/videos are untouched either way (only these named colors invert). */
+:root {
+  --c-black: 10 10 10;
+  --c-white: 255 255 255;
+  --c-bone: 242 235 221;
+  --c-stone-100: 245 245 244;
+  --c-stone-200: 231 229 228;
+  --c-stone-300: 214 211 209;
+  --c-stone-400: 168 162 158;
+  --c-stone-500: 120 113 108;
+  --c-stone-600: 87 83 78;
+  --c-zinc-900: 24 24 27;
+  --c-zinc-950: 9 9 11;
+  --c-scrollbar-thumb: 63 63 70;
+}
+
+[data-theme="light"] {
+  --c-black: 242 235 221;
+  --c-white: 10 10 10;
+  --c-bone: 10 10 10;
+  --c-stone-100: 28 25 23;
+  --c-stone-200: 41 37 36;
+  --c-stone-300: 68 64 60;
+  --c-stone-400: 87 83 78;
+  --c-stone-500: 120 113 108;
+  --c-stone-600: 168 162 158;
+  --c-zinc-900: 244 244 245;
+  --c-zinc-950: 250 250 250;
+  --c-scrollbar-thumb: 212 212 216;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--c-scrollbar-thumb)) rgb(var(--c-black));
+  transition: background-color 400ms ease-out;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Removes the ~300ms tap delay on touch devices for every link/button, so
+   mobile taps (filter chips, gallery cards, nav) feel instant rather than
+   laggy. Safe globally: none of these elements rely on a double-tap or
+   pinch gesture that `manipulation` would otherwise suppress. */
+a, button {
+  touch-action: manipulation;
+}
+
+/* Hides elements until Alpine has initialized, preventing a flash of unstyled content. */
+[x-cloak] {
+  display: none !important;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Hides the scrollbar on horizontally-scrollable rows (e.g. mobile filter chips) while keeping them scrollable. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Preloader indeterminate progress sweep */
+@keyframes loader-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+/* Preloader name pop-in: the first thing a visitor sees */
+@keyframes loader-name-in {
+  0% { opacity: 0; transform: scale(0.94) translateY(6px); letter-spacing: -0.02em; }
+  100% { opacity: 1; transform: scale(1) translateY(0); letter-spacing: 0.05em; }
+}
+
+/* Gentle idle float for the hero scroll cue */
+@keyframes scroll-cue-float {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+.scroll-cue {
+  animation: scroll-cue-float 2s ease-in-out infinite;
+}
+
+/* Achievements roadmap: one-shot "ping" on a milestone's node dot at the
+   exact moment it becomes the active card (see pulsingId in
+   achievementsTimeline(), js/app.js). A fresh element mounted per pulse via
+   x-if, so the animation restarts cleanly every time rather than needing a
+   JS-driven replay. Collapses to a single frame under prefers-reduced-motion
+   via the global override below. */
+@keyframes node-ping {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.node-ping {
+  animation: node-ping 650ms ease-out;
+}
+
+/* Fixed, static film-grain texture — a literal nod to the medium this site is
+   about. Cheap: one non-animated layer, no continuous repaint. */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Custom cursor: only engaged on fine-pointer devices with motion allowed
+   (see magneticCursor() in js/app.js, which toggles this class on <html>).
+   Scoped narrowly so touch/reduced-motion users keep their native cursor. */
+.has-custom-cursor,
+.has-custom-cursor a,
+.has-custom-cursor button {
+  cursor: none;
+}
+
+/* Visible keyboard-focus ring, independent of mouse-click focus (:focus-visible
+   only fires for keyboard/programmatic focus in supporting browsers). */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid rgb(var(--c-bone));
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* The work-gallery grayscale→color reveal (see index.html) is driven by
+   group-hover, which never fires on touch — without this override, touch
+   visitors would see every thumbnail stuck in grayscale until they open the
+   lightbox. any-hover:none targets touch/no-hover devices specifically, so
+   desktop keeps the intentional hover reveal. */
+@media (any-hover: none) {
+  .work-thumb {
+    filter: none !important;
+  }
+}
+
+/* Respect the user's OS-level motion preference: collapse all CSS
+   animations/transitions to effectively instant. JS-driven motion (hero
+   parallax, hero/section text reveals, stat counters, timeline progress,
+   magnetic cursor/buttons) is separately gated in js/app.js. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

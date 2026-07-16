@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tyrel Reuben Lyngdoh — Visual Storyteller, Media Entrepreneur & Educator</title>
+<meta name="description" content="Tyrel Reuben Lyngdoh — visual storyteller, media entrepreneur and communications consultant from Meghalaya, Northeast India. Film, branded content, documentaries and media education.">
+<meta name="theme-color" content="#0a0a0a">
+
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+<!-- Open Graph / Twitter — image reuses the hero photo as a placeholder, same as the
+     Unsplash stand-ins used elsewhere on the page. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tyrel Reuben Lyngdoh — Visual Storyteller, Media Entrepreneur & Educator">
+<meta property="og:description" content="Bridging imagination, ideas and information through stories rooted in Northeast India.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1200&auto=format&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tyrel Reuben Lyngdoh — Visual Storyteller, Media Entrepreneur & Educator">
+<meta name="twitter:description" content="Bridging imagination, ideas and information through stories rooted in Northeast India.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1200&auto=format&fit=crop">
+
+<!-- Always start at the top on load/refresh — runs before the browser restores scroll position -->
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+</script>
+
+<!-- Set the color theme before first paint (avoids a flash of the wrong
+     theme) — stored preference wins, otherwise falls back to the OS
+     light/dark setting. See css/style.css for the [data-theme] variables and
+     js/app.js's themeToggle() for the runtime toggle. -->
+<script>
+  (function () {
+    var stored = localStorage.getItem('theme');
+    var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+
+<!-- Fonts: Poppins for both display/headlines and body copy — a single clean
+     geometric sans, Apple-style typographic consistency. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS (CDN build) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          // Fed from CSS custom properties (see css/style.css :root /
+          // [data-theme="light"]) so every bg-black / text-bone / border-white
+          // / text-stone-* / bg-zinc-* utility in this file inverts with the
+          // theme automatically — no per-element dark: classes needed.
+          black: 'rgb(var(--c-black) / <alpha-value>)',
+          white: 'rgb(var(--c-white) / <alpha-value>)',
+          ink: 'rgb(var(--c-black) / <alpha-value>)',
+          bone: 'rgb(var(--c-bone) / <alpha-value>)',
+          stone: {
+            100: 'rgb(var(--c-stone-100) / <alpha-value>)',
+            200: 'rgb(var(--c-stone-200) / <alpha-value>)',
+            300: 'rgb(var(--c-stone-300) / <alpha-value>)',
+            400: 'rgb(var(--c-stone-400) / <alpha-value>)',
+            500: 'rgb(var(--c-stone-500) / <alpha-value>)',
+            600: 'rgb(var(--c-stone-600) / <alpha-value>)',
+          },
+          zinc: {
+            900: 'rgb(var(--c-zinc-900) / <alpha-value>)',
+            950: 'rgb(var(--c-zinc-950) / <alpha-value>)',
+          },
+        },
+        fontFamily: {
+          display: ['Poppins', 'ui-sans-serif', 'system-ui'],
+          sans: ['Poppins', 'ui-sans-serif', 'system-ui'],
+        },
+        letterSpacing: {
+          widest2: '.35em',
+        },
+        transitionTimingFunction: {
+          // Strong custom curves — Tailwind's built-in eases read as weak/flat.
+          // See: https://easing.dev
+          'out-strong': 'cubic-bezier(0.23, 1, 0.32, 1)',
+          'in-out-strong': 'cubic-bezier(0.77, 0, 0.175, 1)',
+          'drawer': 'cubic-bezier(0.32, 0.72, 0, 1)',
+        },
+      }
+    }
+  }
+</script>
+
+<!-- Alpine.js plugin, then this site's components, then Alpine core — order matters, see js/app.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+<script defer src="js/app.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-black text-stone-100 font-sans antialiased" x-data="pageLoader()">
+
+<a href="#about"
+   class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[999] focus:bg-bone focus:text-black focus:px-4 focus:py-2 focus:text-xs focus:uppercase focus:tracking-widest2">
+  Skip to content
+</a>
+
+<!-- Static film-grain texture — fixed, non-animated, sits above content, below modals -->
+<div class="grain-overlay"></div>
+
+<!-- Scroll progress indicator — informational (like a native scrollbar), so
+     it stays active under prefers-reduced-motion. Sits above the header's
+     floating pill (z-50) at the very top edge. Uses scaleX rather than
+     width so it never touches layout. -->
+<div x-data="scrollProgress()" class="fixed top-0 inset-x-0 z-[60] h-[2px] bg-white/5 pointer-events-none">
+  <div class="h-full w-full bg-bone origin-left" :style="`transform: scaleX(${progress / 100})`"></div>
+</div>
+
+<!-- Custom cursor — desktop fine-pointer + motion-allowed only (see magneticCursor() in js/app.js).
+     Solid, directly theme-bound color (border-bone / bg-bone) rather than
+     mix-blend-mode: difference — blend-difference computed its visible color
+     from whatever was underneath, so it would nearly cancel to invisible
+     whenever it crossed the bone-colored headline/accent text (identical
+     values differenced ≈ 0). A solid color also makes the swap on theme
+     toggle obvious rather than an incidental side-effect. The dark ring adds
+     a bit of definition so it doesn't vanish against same-toned content. -->
+<div x-data="magneticCursor()" x-show="enabled" x-cloak
+     class="fixed top-0 left-0 z-[300] pointer-events-none rounded-full border-2 border-bone shadow-[0_0_0_1px_rgba(0,0,0,0.3)] transition-[width,height,background-color,border-color] duration-200 ease-out-strong"
+     :class="hovering ? 'w-10 h-10 bg-bone/80' : 'w-2.5 h-2.5 bg-bone'"
+     :style="`transform: translate(${x}px, ${y}px) translate(-50%, -50%)`">
+</div>
+
+<!-- =========================================================
+     COMPONENT: Preloader
+     Shown on first paint, hidden once the page (and its images) finish
+     loading. Swap the placeholder monogram below for an <img> logo when
+     one is available — see js/app.js pageLoader() for timing/logic.
+     ========================================================= -->
+<div x-show="loading"
+     x-transition:leave="transition ease-[cubic-bezier(0.23,1,0.32,1)] duration-700"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-[999] bg-black flex items-center justify-center">
+  <div class="flex flex-col items-center gap-8">
+    <!-- Logo placeholder -->
+    <div class="w-16 h-16 rounded-full border border-bone/30 flex items-center justify-center">
+      <span class="font-display text-lg tracking-[0.15em] text-bone">TRL</span>
+    </div>
+    <div class="flex flex-col items-center gap-3">
+      <p class="text-[10px] uppercase tracking-widest2 text-stone-400">Tyrel Reuben Lyngdoh</p>
+      <div class="w-40 h-px bg-white/10 overflow-hidden relative">
+        <div class="absolute inset-y-0 left-0 w-1/3 bg-bone" style="animation: loader-sweep 1.2s ease-in-out infinite;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     COMPONENT: Site Header / "Fluid Island" Nav
+     Full-bleed over the hero; once scrolled, detaches into a centered
+     floating glass pill rather than staying glued edge-to-edge.
+     Kept outside the fade-in wrapper below so its `fixed` positioning stays
+     relative to the viewport (a transformed ancestor would otherwise turn
+     it into a local containing block).
+     ========================================================= -->
+<header x-data="siteHeader()"
+        class="fixed top-0 inset-x-0 z-50 flex justify-center transition-[padding] duration-500 ease-in-out-strong"
+        :class="scrolled ? 'pt-3' : 'pt-0'">
+  <nav class="flex items-center justify-between border transition-all duration-500 ease-in-out-strong"
+       :class="scrolled
+         ? 'w-[92%] max-w-4xl px-5 sm:px-6 h-14 rounded-full bg-black/85 backdrop-blur-md border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.45)]'
+         : 'w-full max-w-7xl px-6 lg:px-10 h-20 rounded-none bg-transparent border-transparent'">
+    <!-- Logo / Signature — "Reuben" drops out once the nav collapses into the
+         floating pill; there isn't room for the full name alongside all the
+         nav links and the theme toggle in that compact width. -->
+    <a href="#" class="font-display tracking-[0.15em] uppercase text-bone leading-none whitespace-nowrap transition-all duration-500 ease-in-out-strong shrink-0"
+       :class="scrolled ? 'text-lg md:text-xl' : 'text-2xl md:text-4xl'">
+      Tyrel<span class="text-stone-400" :class="scrolled ? 'hidden' : 'hidden sm:inline'"> Reuben</span> <span class="text-stone-400">Lyngdoh</span>
+    </a>
+
+    <div class="flex items-center gap-4 md:gap-8 shrink-0">
+      <!-- Desktop Nav — underline tracks whichever section is in view (see siteHeader() activeSection) -->
+      <ul class="hidden md:flex items-center text-xs uppercase tracking-widest2 text-stone-300 transition-all duration-500 ease-in-out-strong" :class="scrolled ? 'gap-5' : 'gap-8'">
+        <li><a href="#about" class="relative pb-1 hover:text-white transition-colors" :class="activeSection === 'about' ? 'text-white' : ''">About<span class="absolute left-0 -bottom-0.5 h-px bg-bone transition-all duration-300 ease-out-strong" :class="activeSection === 'about' ? 'w-full' : 'w-0'"></span></a></li>
+        <li><a href="#work" class="relative pb-1 hover:text-white transition-colors" :class="activeSection === 'work' ? 'text-white' : ''">Work<span class="absolute left-0 -bottom-0.5 h-px bg-bone transition-all duration-300 ease-out-strong" :class="activeSection === 'work' ? 'w-full' : 'w-0'"></span></a></li>
+        <li><a href="#education" class="relative pb-1 hover:text-white transition-colors" :class="activeSection === 'education' ? 'text-white' : ''">Education<span class="absolute left-0 -bottom-0.5 h-px bg-bone transition-all duration-300 ease-out-strong" :class="activeSection === 'education' ? 'w-full' : 'w-0'"></span></a></li>
+        <li><a href="#collective" class="relative pb-1 hover:text-white transition-colors" :class="activeSection === 'collective' ? 'text-white' : ''">Collective<span class="absolute left-0 -bottom-0.5 h-px bg-bone transition-all duration-300 ease-out-strong" :class="activeSection === 'collective' ? 'w-full' : 'w-0'"></span></a></li>
+        <li><a href="#contact" class="relative pb-1 hover:text-white transition-colors" :class="activeSection === 'contact' ? 'text-white' : ''">Contact<span class="absolute left-0 -bottom-0.5 h-px bg-bone transition-all duration-300 ease-out-strong" :class="activeSection === 'contact' ? 'w-full' : 'w-0'"></span></a></li>
+      </ul>
+
+      <!-- Theme toggle — visible at every breakpoint; state/persistence in themeToggle() (js/app.js) -->
+      <button type="button" x-data="themeToggle()" @click="toggle()" aria-label="Toggle color theme" data-cursor-hover
+              class="relative w-8 h-8 shrink-0 flex items-center justify-center text-bone hover:text-white active:scale-90 active:duration-150 transition-all duration-300">
+        <svg x-show="theme === 'dark'" x-cloak class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="4" />
+          <path stroke-linecap="round" d="M12 3v1.5M12 19.5V21M4.22 4.22l1.06 1.06M18.72 18.72l1.06 1.06M3 12h1.5M19.5 12H21M4.22 19.78l1.06-1.06M18.72 5.28l1.06-1.06" />
+        </svg>
+        <svg x-show="theme === 'light'" x-cloak class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+
+      <!-- Mobile Hamburger -->
+      <button @click="mobileOpen = !mobileOpen" aria-label="Toggle menu" class="md:hidden text-bone z-50 relative w-8 h-8 flex flex-col justify-center items-center gap-1.5 active:scale-90 transition-transform duration-150">
+        <span :class="mobileOpen ? 'rotate-45 translate-y-2' : ''" class="block w-7 h-px bg-current transition-transform duration-300"></span>
+        <span :class="mobileOpen ? 'opacity-0' : ''" class="block w-7 h-px bg-current transition-opacity duration-300"></span>
+        <span :class="mobileOpen ? '-rotate-45 -translate-y-2' : ''" class="block w-7 h-px bg-current transition-transform duration-300"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Panel -->
+  <div x-cloak x-show="mobileOpen"
+       x-transition:enter="transition ease-[cubic-bezier(0.23,1,0.32,1)] duration-300"
+       x-transition:enter-start="opacity-0"
+       x-transition:enter-end="opacity-100"
+       x-transition:leave="transition ease-[cubic-bezier(0.77,0,0.175,1)] duration-200"
+       x-transition:leave-start="opacity-100"
+       x-transition:leave-end="opacity-0"
+       @click.outside="mobileOpen = false"
+       class="md:hidden fixed inset-0 bg-black flex flex-col items-center justify-center gap-10 text-lg uppercase tracking-widest2">
+    <a @click="mobileOpen = false" href="#about"
+       class="hover:text-stone-400 active:text-stone-500 active:scale-95 transition-all duration-300 ease-out-strong [transition-delay:75ms]"
+       :class="mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'">About</a>
+    <a @click="mobileOpen = false" href="#work"
+       class="hover:text-stone-400 active:text-stone-500 active:scale-95 transition-all duration-300 ease-out-strong [transition-delay:125ms]"
+       :class="mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'">Work</a>
+    <a @click="mobileOpen = false" href="#education"
+       class="hover:text-stone-400 active:text-stone-500 active:scale-95 transition-all duration-300 ease-out-strong [transition-delay:175ms]"
+       :class="mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'">Education</a>
+    <a @click="mobileOpen = false" href="#collective"
+       class="hover:text-stone-400 active:text-stone-500 active:scale-95 transition-all duration-300 ease-out-strong [transition-delay:200ms]"
+       :class="mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'">Collective</a>
+    <a @click="mobileOpen = false" href="#contact"
+       class="hover:text-stone-400 active:text-stone-500 active:scale-95 transition-all duration-300 ease-out-strong [transition-delay:225ms]"
+       :class="mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'">Contact</a>
+  </div>
+</header>
+
+<!-- Page content — cross-fades in as the preloader fades out -->
+<div :class="loading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'" class="transition-all duration-700 ease-out-strong">
+
+<!-- <main> wraps Hero through Contact only (not the footer below) — kept as
+     an inner landmark rather than promoting the fade-in div itself, so
+     <footer> stays a sibling landmark instead of nesting inside <main>. -->
+<main>
+
+<!-- =========================================================
+     COMPONENT: Hero Section
+     Headline reveals line-by-line through an overflow-hidden mask, keyed
+     off the shared `loading` flag from pageLoader() (inherited — this
+     section's own x-data doesn't define `loading`, so it resolves up the
+     Alpine scope chain). Background keeps its scroll-tied parallax + fade.
+     ========================================================= -->
+<section class="relative h-[100svh] min-h-[560px] w-full flex items-center overflow-hidden bg-zinc-950"
+         x-data="heroParallax()">
+  <!-- Background image layer — subtle parallax drift + zoom as you scroll -->
+  <div class="absolute inset-0 will-change-transform"
+       :style="`transform: translate3d(0, ${scrollY * 0.35}px, 0) scale(${1.05 + scrollY / 6000})`">
+    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=2400&auto=format&fit=crop"
+         alt="Placeholder image of misty hill landscape, Northeast India"
+         class="w-full h-full object-cover opacity-60">
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/70"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60"></div>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-10 pb-8 md:pb-12 will-change-transform"
+       :style="`opacity: ${Math.max(1 - scrollY / 480, 0)}; transform: translate3d(0, ${scrollY * 0.25}px, 0)`">
+
+    <!-- <div class="flex items-center gap-4 mb-6 overflow-hidden">
+      <span class="block w-8 h-px bg-stone-500 transition-all duration-700 ease-out-strong [transition-delay:100ms]"
+            :class="!loading ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'" style="transform-origin: left center"></span>
+      <p class="font-display italic text-lg md:text-xl text-stone-200 tracking-wide font-medium transition-all duration-700 ease-out-strong [transition-delay:150ms]"
+         :class="!loading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'">
+        Tyrel Reuben Lyngdoh
+      </p>
+    </div> -->
+
+    <p class="text-xs md:text-sm uppercase tracking-widest2 text-stone-400 mb-6 transition-all duration-700 ease-out-strong [transition-delay:200ms]"
+       :class="!loading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'">
+      Visual Storyteller &middot; Media Entrepreneur &middot; Educator
+    </p>
+
+    <h1 class="font-display text-balance text-4xl sm:text-6xl md:text-8xl leading-[1.05] sm:leading-[0.95] text-bone max-w-4xl">
+      <span class="block overflow-hidden pb-1">
+        <span class="block transition-transform duration-[1200ms] ease-out-strong [transition-delay:320ms]" :class="!loading ? 'translate-y-0' : 'translate-y-full'">Stories rooted</span>
+      </span>
+      <span class="block overflow-hidden pb-1">
+        <span class="block transition-transform duration-[1200ms] ease-out-strong [transition-delay:500ms]" :class="!loading ? 'translate-y-0' : 'translate-y-full'">in the hills</span>
+      </span>
+      <span class="block overflow-hidden pb-1">
+        <span class="block transition-transform duration-[1200ms] ease-out-strong [transition-delay:680ms]" :class="!loading ? 'translate-y-0' : 'translate-y-full'">I call home.</span>
+      </span>
+    </h1>
+
+    <p class="mt-8 max-w-xl text-stone-300 text-base md:text-lg font-light leading-relaxed transition-all duration-700 ease-out-strong [transition-delay:560ms]"
+       :class="!loading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'">
+      Bridging imagination, ideas and information through stories rooted in Northeast India, across film, branded content, documentaries and media education.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-6 transition-all duration-700 ease-out-strong [transition-delay:650ms]"
+         :class="!loading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'">
+      <a href="#work" x-data="magneticButton()"
+         @mousedown="pressed = true" @mouseup="pressed = false" @mouseleave="pressed = false"
+         :style="enabled ? `transform: translate(${tx}px, ${ty}px) scale(${pressed ? 0.97 : 1})` : ''"
+         class="group inline-flex items-center gap-3 text-xs uppercase tracking-widest2 bg-bone text-black pl-7 pr-3 py-3.5 hover:bg-white transition-all duration-300 ease-out-strong active:scale-[0.98] active:duration-150">
+        <span>Explore My Work</span>
+        <span class="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center transition-transform duration-300 ease-out-strong group-hover:translate-x-0.5">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </span>
+      </a>
+      <a href="#about" class="inline-flex items-center gap-3 text-xs uppercase tracking-widest2 text-stone-200 border-b border-stone-100/30 pb-1 hover:border-stone-100 hover:gap-4 active:opacity-60 active:duration-150 transition-all duration-300">
+        About
+      </a>
+      <a href="#contact" class="inline-flex items-center gap-3 text-xs uppercase tracking-widest2 text-stone-200 border-b border-stone-100/30 pb-1 hover:border-stone-100 hover:gap-4 active:opacity-60 active:duration-150 transition-all duration-300">
+        Collaborate
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator — fades out as the user scrolls past the hero -->
+  <a href="#about"
+     aria-label="Scroll to About section"
+     class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden sm:flex flex-col items-center gap-2 text-stone-400 hover:text-bone transition-colors duration-300"
+     :style="`opacity: ${Math.max(1 - scrollY / 200, 0)}`">
+    <span class="text-[10px] uppercase tracking-widest2">Scroll</span>
+    <svg class="w-4 h-4 scroll-cue" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
+  </a>
+</section>
+
+<!-- =========================================================
+     COMPONENT: About Section
+     Heading reveals through the same overflow-hidden line-mask as the hero
+     (keyed off this block's own scroll-triggered `revealed` flag), and
+     stats animate as a count-up (statCounter() in js/app.js) once visible.
+     ========================================================= -->
+<section id="about" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+
+    <div class="md:col-span-4"
+         x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">About</p>
+      <h2 class="font-display text-4xl md:text-5xl text-bone leading-tight overflow-hidden pb-1">
+        <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">
+          Bridging imagination and information.
+        </span>
+      </h2>
+    </div>
+
+    <div class="md:col-span-7 md:col-start-6 space-y-6 text-stone-300 font-light leading-relaxed text-base md:text-lg"
+         x-data="revealOnScroll()" x-intersect.once="reveal()"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
+         style="transition: opacity 1000ms cubic-bezier(0.23,1,0.32,1) 150ms, transform 1000ms cubic-bezier(0.23,1,0.32,1) 150ms">
+      <p>
+        I'm Tyrel Reuben Lyngdoh, a visual storyteller, media entrepreneur and communications consultant from
+        Meghalaya, Northeast India. My work is driven by a belief in bridging imagination, ideas and information
+        through stories rooted in the region I call home.
+      </p>
+      <p>
+        My journey in the media industry began in 2016 and has grown across creative direction, production and
+        communications ever since. I've worked on feature films including <span class="text-stone-100">Iewduh</span>,
+        <span class="text-stone-100">Lorni &ndash; The Flaneur</span> and <span class="text-stone-100">Rwai Ka Shara</span>,
+        alongside commercial projects for brands like Toyota, NEXA, Ather, Wild Stone and Unilever Ayush. That work
+        has taken me from production sets across the Khasi, Jaintia and Garo Hills to a content assignment in the
+        United Kingdom with the Shillong Chamber Choir.
+      </p>
+      <p>
+        One of my earliest significant collaborations, with IFAD, Roger King and NESFAS, sharpened my interest in
+        documenting food, agriculture, people and indigenous knowledge, an interest that still shapes much of my
+        work today, including documentation of Meghalaya's globally recognised Living Root Bridges and the
+        traditions connected to them.
+      </p>
+      <p>
+        As a filmmaker my approach stays raw, human and cinematic. My short film <span class="text-stone-100">Ka
+        Jingshemphang (The Knowing)</span> marked an important step in establishing my own voice, and in 2019 I
+        founded <span class="text-stone-100">The Hillspeople Collective</span> to build that voice into a wider
+        creative and production practice.
+      </p>
+
+      <p class="font-display italic text-xl md:text-2xl text-bone leading-snug pt-2">
+        &ldquo;It is about documenting stories worth remembering, creating opportunities for others.&rdquo;
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     COMPONENT: Industries
+     Six industry areas the work spans, derived from the projects and
+     collaborations described in the About section above.
+     ========================================================= -->
+<section id="industries" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="mb-14 md:mb-16" x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Industries</p>
+      <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl overflow-hidden pb-1">
+        <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Where the work lives.</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 border border-white/10">
+      <template x-for="(industry, index) in [
+        { icon: 'm12.296 3.464 3.02 3.956 M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z m6.18 5.276 3.1 3.899', title: 'Film &amp; Feature Production', desc: 'Feature films, short narrative work and independent cinema.' },
+        { icon: 'M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14 M8 6v8', title: 'Branded &amp; Commercial Content', desc: 'Campaign films and content for national and regional brands.' },
+        { icon: 'M12 7v14 M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z', title: 'Documentary &amp; Indigenous Knowledge', desc: 'Food, agriculture, people and indigenous knowledge across Northeast India.' },
+        { icon: 'm8 3 4 8 5-5 5 15H2L8 3z', title: 'Tourism &amp; Culture', desc: 'Living Root Bridges, hill communities and cultural heritage documentation.' },
+        { icon: 'M10 18v-7 M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z M14 18v-7 M18 18v-7 M3 22h18 M6 18v-7', title: 'Government &amp; Development Communication', desc: 'Communications for departments and development organisations.' },
+        { icon: 'M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z M22 10v6 M6 12.5V16a6 3 0 0 0 12 0v-3.5', title: 'Media Education &amp; Training', desc: 'Practical, accessible training through the Meghalaya Filmmakers Training Centre.' },
+      ]" :key="industry.title">
+        <div x-data="revealOnScroll()" x-intersect.once="reveal()"
+             class="group bg-black p-8 md:p-10 transition-all duration-700 ease-out-strong hover:bg-white/[0.03]"
+             :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
+             :style="`transition-delay: ${(index % 3) * 100}ms`">
+          <svg class="w-7 h-7 text-stone-400 group-hover:text-bone transition-colors duration-300 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" :d="industry.icon" />
+          </svg>
+          <h3 class="font-display text-lg text-bone mb-2" x-text="industry.title"></h3>
+          <p class="text-sm text-stone-400 font-light leading-relaxed" x-text="industry.desc"></p>
+        </div>
+      </template>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     COMPONENT: Statistics
+     Real, bio-sourced numbers — reuses statCounter() exactly as the old
+     About-section stat block did.
+     ========================================================= -->
+<section id="statistics" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="mb-14 md:mb-16" x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Statistics</p>
+      <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl overflow-hidden pb-1">
+        <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">A decade, in numbers.</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-6">
+      <div x-data="statCounter(10)" x-intersect.once="count()">
+        <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mt-3">Years in Media</p>
+      </div>
+      <div x-data="statCounter(3)" x-intersect.once="count()">
+        <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span></p>
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mt-3">Feature Films</p>
+      </div>
+      <div x-data="statCounter(100)" x-intersect.once="count()">
+        <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span></p>
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mt-3">Students Trained</p>
+      </div>
+      <div x-data="statCounter(20)" x-intersect.once="count()">
+        <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mt-3">Partner Organisations</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     COMPONENT: Career Milestones (Interactive Timeline)
+     - `milestones` (in js/app.js, achievementsTimeline()) is the seed
+       dataset. On migration, fetch it from GET /api/milestones (ordered by
+       year) in init().
+     - addMilestone() / deleteMilestone() are stubbed client-side; see the
+       TODO (Laravel migration) comments in js/app.js for the POST/DELETE
+       calls to wire up.
+     - A scroll-driven line fills in over the base track as the section
+       scrolls through view; the "present" milestone gets a highlighted
+       card treatment on desktop.
+     ========================================================= -->
+<section id="milestones" class="relative bg-black py-28 md:py-36 border-t border-white/5 overflow-hidden scroll-mt-16" x-data="achievementsTimeline()">
+  <!-- ambient background accent -->
+  <div class="absolute -left-40 top-1/3 w-96 h-96 bg-white/[0.03] rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="relative max-w-5xl mx-auto px-6 lg:px-10">
+
+    <div class="mb-14 md:mb-16 flex items-end justify-between flex-wrap gap-6"
+         x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <div>
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Milestones</p>
+        <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl overflow-hidden pb-1">
+          <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">2016 to now.</span>
+        </h2>
+        <p class="mt-4 text-stone-400 font-light max-w-xl leading-relaxed transition-all duration-700 ease-out-strong [transition-delay:150ms]"
+           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+          The turning points that shaped a decade-long practice.
+        </p>
+      </div>
+      <!-- Hidden for now: adding will be handled from the Laravel backend once it exists -->
+      <button type="button" disabled title="Coming soon — managed from the backend"
+              class="hidden text-xs uppercase tracking-widest2 border border-white/10 px-4 py-2.5 rounded-full text-stone-600 cursor-not-allowed shrink-0">
+        + Add Milestone
+      </button>
+      <!-- Roadmap nav — desktop only; touch users swipe the track directly -->
+      <div class="hidden md:flex items-center gap-2 transition-all duration-700 ease-out-strong"
+           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+        <button type="button" @click="scrollByCard(-1)" aria-label="Previous milestones" data-cursor-hover
+                class="w-11 h-11 flex items-center justify-center rounded-full border border-white/15 text-stone-300 hover:text-bone hover:border-bone active:scale-90 active:duration-150 transition-all duration-300">
+          &#8249;
+        </button>
+        <button type="button" @click="scrollByCard(1)" aria-label="Next milestones" data-cursor-hover
+                class="w-11 h-11 flex items-center justify-center rounded-full border border-white/15 text-stone-300 hover:text-bone hover:border-bone active:scale-90 active:duration-150 transition-all duration-300">
+          &#8250;
+        </button>
+      </div>
+    </div>
+
+    <!-- Category Filters — horizontally scrollable chip row on mobile, wraps on larger screens -->
+    <div class="no-scrollbar flex flex-nowrap sm:flex-wrap gap-2.5 mb-16 overflow-x-auto sm:overflow-visible -mx-6 px-6 sm:mx-0 sm:px-0 pb-1 sm:pb-0"
+         role="tablist" aria-label="Filter milestones by category">
+      <template x-for="cat in categories" :key="cat.key">
+        <button
+          type="button"
+          @click="filter = cat.key"
+          role="tab"
+          data-cursor-hover
+          :aria-selected="filter === cat.key"
+          :class="filter === cat.key ? 'bg-bone text-black border-bone' : 'text-stone-400 border-white/15 hover:border-white/40 hover:text-stone-200'"
+          class="shrink-0 text-xs uppercase tracking-widest2 px-4 py-2.5 border rounded-full active:scale-95 active:duration-150 transition-all duration-300"
+          x-text="`${cat.label} (${cat.key === 'all' ? milestones.length : (categoryCounts[cat.key] || 0)})`">
+        </button>
+      </template>
+    </div>
+
+    <!-- Roadmap — horizontally scrolling timeline. Base track + a scroll-linked
+         fill (driven directly off the track's own scrollLeft, not an
+         IntersectionObserver — see scrollByCard()/init() in
+         achievementsTimeline(), js/app.js) drawn behind a row of snap-scroll
+         milestone cards. -->
+    <div class="relative">
+      <div x-ref="timelineTrack"
+           @mouseenter="startAutoScroll()" @mouseleave="stopAutoScroll()"
+           @mousedown="stopAutoScroll()" @touchstart="stopAutoScroll()" @wheel="stopAutoScroll()"
+           class="relative overflow-x-auto no-scrollbar scroll-smooth snap-x snap-proximity -mx-6 px-6 sm:mx-0 sm:px-0 pb-8">
+        <div class="relative flex items-start gap-10 md:gap-14 w-max">
+          <!-- Base track (full content width) + scroll-driven fill -->
+          <div class="absolute left-0 right-0 top-[22px] h-px bg-white/10"></div>
+          <div class="absolute left-0 top-[22px] h-px bg-bone/70 transition-[width] duration-150 ease-out"
+               :style="`width: ${timelineProgress * 100}%`"></div>
+
+          <template x-for="item in filtered" :key="item.id">
+            <div x-data="revealOnScroll()"
+                 x-intersect.once="reveal()"
+                 x-init="registerCard($el, item.id)"
+                 x-transition:leave="transition-all duration-300 ease-in-out-strong"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
+                 class="relative shrink-0 w-72 sm:w-80 snap-start transition-all duration-700 ease-out-strong group">
+
+              <!-- Node: nested ring + dot, vertically centered on the track line.
+                   Gets a soft ring while its card is the active one (on top
+                   of the existing "present milestone" treatment), plus a
+                   one-shot ping the instant it becomes active. -->
+              <div class="relative z-10 h-11 flex items-center">
+                <span :class="[item.present ? 'border-bone' : 'border-white/15 group-hover:border-white/40', currentId === item.id ? 'ring-4 ring-bone/25' : '']"
+                      class="relative w-5 h-5 rounded-full border bg-black flex items-center justify-center transition-all duration-300">
+                  <template x-if="pulsingId === item.id">
+                    <span class="node-ping absolute inset-0 rounded-full border-2 border-bone pointer-events-none"></span>
+                  </template>
+                  <span :class="item.present ? 'bg-bone ring-4 ring-bone/20 animate-pulse' : 'bg-stone-600 group-hover:bg-bone'"
+                        class="w-2 h-2 rounded-full transition-colors duration-300"></span>
+                </span>
+              </div>
+
+              <div :class="item.present ? 'md:bg-white/[0.03] md:border md:border-white/10 md:rounded-2xl md:p-5 md:-mt-2 md:-mx-1' : ''">
+                <button type="button" @click="toggle(item.id)" data-cursor-hover class="w-full text-left cursor-pointer active:opacity-70 transition-opacity duration-150" :aria-expanded="active === item.id">
+                  <div class="flex flex-wrap items-baseline gap-3 mb-2">
+                    <span :class="currentId === item.id ? 'text-white scale-110' : 'text-bone scale-100'"
+                          class="inline-block font-display text-3xl tabular-nums origin-left transition-all duration-500 ease-out-strong" x-text="item.year"></span>
+                    <span class="text-[10px] uppercase tracking-widest2 text-stone-400 border border-white/15 rounded-full px-3 py-1" x-text="item.tag"></span>
+                  </div>
+                  <h3 class="font-display text-lg md:text-xl text-stone-200 group-hover:text-bone transition-colors duration-300 flex items-start gap-2">
+                    <span x-text="item.title"></span>
+                    <svg :class="active === item.id ? '-rotate-180' : ''" class="w-4 h-4 mt-1 text-stone-400 transition-transform duration-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </h3>
+                </button>
+
+                <div x-show="active === item.id"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 -translate-y-2"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"
+                     x-cloak
+                     class="mt-3">
+                  <p class="text-stone-400 font-light leading-relaxed text-sm" x-text="item.description"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- Edge fade — hints there's more to scroll, matches the section's black bg -->
+      <div class="absolute right-0 top-0 bottom-8 w-16 bg-gradient-to-l from-black to-transparent pointer-events-none"></div>
+
+      <!-- Empty state: shown when a filter has no matching milestones -->
+      <p x-cloak x-show="filtered.length === 0" class="text-stone-400 text-sm">
+        No milestones in this category yet.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     COMPONENT: Collaborators
+     Grouped name-wall pulled directly from the bio's "worked extensively
+     with..." sentence — brands the personal practice has served, and the
+     government/development partners engaged through the Collective.
+     ========================================================= -->
+<section id="collaborators" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="mb-14 md:mb-16" x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Collaborators</p>
+      <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl overflow-hidden pb-1">
+        <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Trusted across sectors.</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+      <div x-data="revealOnScroll()" x-intersect.once="reveal()"
+           class="transition-all duration-700 ease-out-strong" :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'">
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-5">Brand &amp; Commercial</p>
+        <div class="flex flex-wrap gap-2.5">
+          <template x-for="name in ['Toyota', 'NEXA', 'Ather', 'Wild Stone', 'Unilever Ayush']" :key="name">
+            <span class="text-sm uppercase tracking-wide px-4 py-2.5 border border-white/15 rounded-full text-stone-300" x-text="name"></span>
+          </template>
+        </div>
+      </div>
+      <div x-data="revealOnScroll()" x-intersect.once="reveal()"
+           class="transition-all duration-700 ease-out-strong [transition-delay:100ms]" :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'">
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-5">Government &amp; Development</p>
+        <div class="flex flex-wrap gap-2.5">
+          <template x-for="name in ['Department of Tourism', 'Department of Sports &amp; Youth Affairs', 'MBMA', 'PRIME Meghalaya', 'ATMA', 'Arts &amp; Culture', 'Soil &amp; Water Conservation', 'Election Department', 'Meghalayan Age Limited', 'IFAD', 'NESFAS']" :key="name">
+            <span class="text-sm uppercase tracking-wide px-4 py-2.5 border border-white/15 rounded-full text-stone-300" x-text="name"></span>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     COMPONENT: Selected Work Gallery
+     - `projects` (in js/app.js, workGallery()) is the seed dataset. On
+       migration, fetch it from GET /api/projects and assign it in init().
+     - addProject() / deleteProject() are stubbed client-side; see the
+       TODO (Laravel migration) comments in js/app.js for the POST/DELETE
+       calls to wire up.
+     - Every card (image or video) opens the shared lightbox below —
+       openLightbox() captures the clicked thumbnail's screen position so
+       the lightbox visibly grows out of it instead of just appearing.
+     ========================================================= -->
+<section id="work" class="bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16" x-data="workGallery()">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex items-end justify-between mb-14 flex-wrap gap-6"
+         x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <div>
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Selected Work</p>
+        <h2 class="font-display text-4xl md:text-5xl text-bone overflow-hidden pb-1">
+          <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Recent Frames</span>
+        </h2>
+      </div>
+      <div class="flex items-center gap-6 transition-all duration-700 ease-out-strong"
+           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+        <a href="#contact" class="text-xs uppercase tracking-widest2 text-stone-300 border-b border-stone-100/30 pb-1 hover:border-stone-100 active:opacity-60 active:duration-150 transition-all">
+          Inquire About Full Portfolio
+        </a>
+        <!-- Hidden for now: adding will be handled from the Laravel backend once it exists -->
+        <button type="button" disabled title="Coming soon — managed from the backend"
+                class="hidden text-xs uppercase tracking-widest2 border border-white/10 px-4 py-2.5 rounded-full text-stone-600 cursor-not-allowed shrink-0">
+          + Add Project
+        </button>
+      </div>
+    </div>
+
+    <!-- Category filters — same interaction pattern as the Achievements
+         timeline filters below, applied here to the project categories. -->
+    <div class="flex flex-wrap gap-2.5 mb-10" role="tablist" aria-label="Filter work by category">
+      <template x-for="cat in categories" :key="cat">
+        <button
+          type="button"
+          @click="filter = cat"
+          role="tab"
+          data-cursor-hover
+          :aria-selected="filter === cat"
+          :class="filter === cat ? 'bg-bone text-black border-bone' : 'text-stone-400 border-white/15 hover:border-white/40 hover:text-stone-200'"
+          class="shrink-0 text-xs uppercase tracking-widest2 px-4 py-2.5 border rounded-full active:scale-95 active:duration-150 transition-all duration-300"
+          x-text="cat === 'all' ? 'All' : cat">
+        </button>
+      </template>
+    </div>
+
+    <!-- Add Project form — client-side provision; POSTs to /api/projects once on Laravel -->
+    <div x-show="showAddForm" x-cloak x-transition
+         class="mb-10 border border-white/10 p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs uppercase tracking-widest2 text-stone-400 mb-2">Title</label>
+        <input type="text" x-model="newProject.title"
+               class="w-full bg-transparent border-b border-white/20 focus:border-bone outline-none py-2 text-stone-100 placeholder-stone-600 transition-colors"
+               placeholder="Project title">
+      </div>
+      <div>
+        <label class="block text-xs uppercase tracking-widest2 text-stone-400 mb-2">Category</label>
+        <input type="text" x-model="newProject.category"
+               class="w-full bg-transparent border-b border-white/20 focus:border-bone outline-none py-2 text-stone-100 placeholder-stone-600 transition-colors"
+               placeholder="Editorial, Campaign, Documentary...">
+      </div>
+      <div class="sm:col-span-2">
+        <label class="block text-xs uppercase tracking-widest2 text-stone-400 mb-2">Image URL</label>
+        <input type="text" x-model="newProject.image"
+               class="w-full bg-transparent border-b border-white/20 focus:border-bone outline-none py-2 text-stone-100 placeholder-stone-600 transition-colors"
+               placeholder="https://...">
+      </div>
+      <div class="sm:col-span-2">
+        <label class="block text-xs uppercase tracking-widest2 text-stone-400 mb-2">Alt Text</label>
+        <input type="text" x-model="newProject.alt"
+               class="w-full bg-transparent border-b border-white/20 focus:border-bone outline-none py-2 text-stone-100 placeholder-stone-600 transition-colors"
+               placeholder="Short image description">
+      </div>
+      <div class="sm:col-span-2">
+        <button type="button" @click="addProject()"
+                class="text-xs uppercase tracking-widest2 bg-bone text-black px-6 py-3 hover:bg-white hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 ease-out-strong active:duration-150">
+          Add Project
+        </button>
+      </div>
+    </div>
+
+    <!-- @foreach($projects as $project) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <template x-for="(project, index) in filteredProjects" :key="project.id">
+        <div x-data="revealOnScroll()" x-intersect.once="reveal()"
+             class="p-1.5 bg-white/5 rounded-[1.25rem] transition-all duration-700 ease-out-strong"
+             :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+             :style="`transition-delay: ${(index % 3) * 100}ms`">
+          <div x-data="tiltCard()" @mousemove="onMove($event)" @mouseleave="onLeave()" :style="style"
+               class="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-900">
+            <button type="button" @click="openLightbox(index, $event)" data-cursor-hover
+                    class="absolute inset-0 block w-full text-left cursor-pointer">
+              <img :src="project.image" :alt="project.alt" loading="lazy" decoding="async" class="work-thumb w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
+
+              <!-- Play affordance for video items — poster image only until clicked, avoids autoplaying <video> elements in the grid -->
+              <span x-show="project.type === 'video'"
+                    class="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/25 transition-colors duration-300">
+                <span class="w-14 h-14 rounded-full bg-black/60 group-hover:bg-bone group-hover:scale-110 flex items-center justify-center transition-all duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 translate-x-0.5 text-bone group-hover:text-black transition-colors duration-300">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+              </span>
+
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <div class="absolute bottom-0 left-0 p-6">
+                <p class="text-xs uppercase tracking-widest2 text-stone-400" x-text="project.category"></p>
+                <h3 class="font-display text-2xl text-bone mt-1" x-text="project.title"></h3>
+              </div>
+            </button>
+          </div>
+        </div>
+      </template>
+    </div>
+    <!-- @endforeach -->
+
+    <p x-cloak x-show="projects.length === 0" class="text-stone-400 text-sm mt-6">
+      No projects yet — add your first above.
+    </p>
+    <p x-cloak x-show="projects.length > 0 && filteredProjects.length === 0" class="text-stone-400 text-sm mt-6">
+      No projects in this category yet.
+    </p>
+
+    <!-- Unified lightbox — opens for both image and video projects. The
+         first open grows from the clicked thumbnail (lightboxOrigin, set in
+         openLightbox()); prev()/next() just settle centered since there's no
+         single origin once you're navigating within the lightbox.
+         x-teleport="body" moves this to a direct child of <body> at runtime
+         — it lives inside the page's fade-in wrapper (index.html, the div
+         with the scale-100/scale-[0.98] transform classes), and a CSS
+         transform on an ancestor turns `position: fixed` descendants into
+         being positioned relative to that ancestor instead of the viewport,
+         which is exactly why the header and back-to-top button are also
+         kept outside that wrapper. Teleporting achieves the same escape
+         without relocating this markup out of the workGallery() component. -->
+    <template x-teleport="body">
+      <div x-show="activeIndex !== null"
+           x-cloak
+           x-transition:enter="transition ease-out duration-300"
+           x-transition:enter-start="opacity-0"
+           x-transition:enter-end="opacity-100"
+           x-transition:leave="transition ease-in duration-200"
+           x-transition:leave-start="opacity-100"
+           x-transition:leave-end="opacity-0"
+           @keydown.escape.window="closeLightbox()"
+           @keydown.arrow-right.window="next()"
+           @keydown.arrow-left.window="prev()"
+           @click.self="closeLightbox()"
+           class="fixed inset-0 z-[200] bg-black/95 backdrop-blur-sm flex items-center justify-center p-6">
+        <button type="button" @click="closeLightbox()" aria-label="Close" data-cursor-hover
+                class="absolute top-6 right-6 w-11 h-11 flex items-center justify-center rounded-full border border-white/20 text-stone-300 hover:text-bone hover:border-bone active:scale-90 active:duration-150 transition-all duration-300">
+          &#10005;
+        </button>
+        <button type="button" @click="prev()" aria-label="Previous project" data-cursor-hover
+                class="absolute left-4 md:left-8 w-11 h-11 flex items-center justify-center rounded-full border border-white/20 text-stone-300 hover:text-bone hover:border-bone active:scale-90 active:duration-150 transition-all duration-300">
+          &#8249;
+        </button>
+        <button type="button" @click="next()" aria-label="Next project" data-cursor-hover
+                class="absolute right-4 md:right-8 w-11 h-11 flex items-center justify-center rounded-full border border-white/20 text-stone-300 hover:text-bone hover:border-bone active:scale-90 active:duration-150 transition-all duration-300">
+          &#8250;
+        </button>
+
+        <div class="w-full max-w-4xl transition-transform duration-500 ease-out-strong"
+             :style="!entered ? `transform: translate(${lightboxOrigin.x}px, ${lightboxOrigin.y}px) scale(${lightboxOrigin.scale})` : 'transform: translate(0px, 0px) scale(1)'"
+             @click.stop
+             @touchstart.passive="onTouchStart($event)"
+             @touchend="onTouchEnd($event)">
+          <template x-if="activeProject">
+            <div>
+              <img x-show="activeProject.type === 'image'" :src="activeProject?.image" :alt="activeProject?.alt" class="w-full max-h-[80vh] object-contain bg-black">
+              <video x-show="activeProject.type === 'video'" x-ref="lightboxVideo" :src="activeProject?.video" controls autoplay playsinline
+                     class="w-full max-h-[80vh] bg-black"></video>
+              <div class="mt-4 flex items-center justify-between text-xs uppercase tracking-widest2 text-stone-400">
+                <span x-text="activeProject?.category"></span>
+                <span x-text="activeProject?.title"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </template>
+  </div>
+</section>
+
+<!-- =========================================================
+     COMPONENT: Education
+     The Meghalaya Filmmakers Training Centre, founded 2023. Mirrors the
+     About section's md:col-span-4 / md:col-span-7 grid for consistency.
+     ========================================================= -->
+<section id="education" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+
+    <div class="md:col-span-4"
+         x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Education</p>
+      <h2 class="font-display text-4xl md:text-5xl text-bone leading-tight overflow-hidden pb-1">
+        <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">
+          Meghalaya Filmmakers Training Centre.
+        </span>
+      </h2>
+      <p class="mt-4 text-stone-400 text-sm uppercase tracking-widest2 transition-all duration-700 ease-out-strong [transition-delay:150ms]"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Est. 2023</p>
+    </div>
+
+    <div class="md:col-span-7 md:col-start-6 space-y-6 text-stone-300 font-light leading-relaxed text-base md:text-lg"
+         x-data="revealOnScroll()" x-intersect.once="reveal()"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
+         style="transition: opacity 1000ms cubic-bezier(0.23,1,0.32,1) 150ms, transform 1000ms cubic-bezier(0.23,1,0.32,1) 150ms">
+      <p>
+        Recognising the growing media industry's need for accessible, practical and industry-relevant training,
+        I established the Meghalaya Filmmakers Training Centre in 2023. Close to 100 students have since been
+        trained through courses, workshops and mentorship programmes in photography, videography, editing and
+        mobile filmmaking.
+      </p>
+      <p>
+        I strongly advocate mobile filmmaking as one of the most accessible entry points into visual storytelling,
+        encouraging young people to trust their creative instincts and recognise media as a viable livelihood.
+      </p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
+        <template x-for="program in ['Photography', 'Videography', 'Editing', 'Mobile Filmmaking']" :key="program">
+          <div class="border border-white/10 rounded-xl px-4 py-4 text-center">
+            <p class="text-xs uppercase tracking-widest2 text-stone-300" x-text="program"></p>
+          </div>
+        </template>
+      </div>
+
+      <div class="pt-8 border-t border-white/10 mt-2">
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4">Workshops, speaking &amp; mentorship</p>
+        <div class="flex flex-wrap gap-2.5">
+          <template x-for="name in ['MSRLS', 'Department of Education', 'Women’s College', 'Shillong Chamber International School', 'St. Mary’s College', 'St. Anthony’s College']" :key="name">
+            <span class="text-sm px-4 py-2 border border-white/15 rounded-full text-stone-400" x-text="name"></span>
+          </template>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <a href="#contact" class="inline-flex items-center gap-3 text-xs uppercase tracking-widest2 text-stone-200 border-b border-stone-100/30 pb-1 hover:border-stone-100 hover:gap-4 active:opacity-60 active:duration-150 transition-all duration-300">
+          Enquire About Workshops
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     COMPONENT: The Hillspeople Collective
+     Founded 2019. Uses the site's theme-token pair bg-bone/text-black as an
+     inverted "stamp" panel — this pair is always the opposite of the page's
+     current surface color in both themes (see css/style.css :root vs.
+     [data-theme="light"]), which happens to exactly match the black-mark-
+     on-white / cream-mark-on-black logo variants without any new CSS.
+     The mountain mark below is a recreated SVG (no source asset file was
+     available) built with currentColor so it inherits this section's
+     inverted text color automatically.
+     ========================================================= -->
+<section id="collective" class="relative bg-bone text-black py-28 md:py-36 scroll-mt-16">
+  <div class="max-w-5xl mx-auto px-6 lg:px-10 text-center" x-data="revealOnScroll()" x-intersect.once="reveal()">
+
+    <svg viewBox="0 0 400 260" class="w-64 sm:w-80 mx-auto mb-10 text-black transition-all duration-1000 ease-out-strong"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
+         fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <text x="200" y="28" text-anchor="middle" fill="currentColor" stroke="none" font-family="Poppins, sans-serif" font-size="14" letter-spacing="6">THE</text>
+      <text x="200" y="68" text-anchor="middle" fill="currentColor" stroke="none" font-family="Poppins, sans-serif" font-size="40" font-weight="500" letter-spacing="4">HILLSPEOPLE</text>
+      <line x1="0" y1="92" x2="400" y2="92" stroke="currentColor" stroke-width="1.5" />
+      <path d="M0 92 L90 190 L150 130 L172 155 L188 138 L206 158 L235 118 L310 190 L400 92"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+      <path d="M0 92 L90 190 L150 130 L172 155 L188 138 L206 158 L235 118 L310 190 L400 92 V260 H0 Z"
+            fill="currentColor" stroke="none" opacity="1" />
+    </svg>
+
+    <p class="text-xs uppercase tracking-widest2 opacity-60 mb-4 transition-all duration-700 ease-out-strong [transition-delay:100ms]"
+       :class="revealed ? 'opacity-60 translate-y-0' : 'opacity-0 translate-y-4'">Est. 2019</p>
+
+    <h2 class="font-display text-3xl md:text-4xl leading-snug max-w-2xl mx-auto overflow-hidden pb-1 mb-6">
+      <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">
+        A creative and production company, built for Northeast India's stories.
+      </span>
+    </h2>
+
+    <p class="max-w-2xl mx-auto font-light leading-relaxed opacity-80 transition-all duration-700 ease-out-strong [transition-delay:150ms]"
+       :class="revealed ? 'opacity-80 translate-y-0' : 'opacity-0 translate-y-4'">
+      In 2019 I founded The Hillspeople Collective, built around film production, creative direction, production
+      management and communications. Through the Collective I've worked extensively with brands, government
+      departments and development organisations across the region.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-6 transition-all duration-700 ease-out-strong [transition-delay:250ms]"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+      <a href="#collaborators" class="inline-flex items-center gap-3 text-xs uppercase tracking-widest2 border-b border-black/30 pb-1 hover:border-black active:opacity-60 active:duration-150 transition-all duration-300">
+        See Collaborators
+      </a>
+      <a href="#contact" data-cursor-hover
+         class="group inline-flex items-center gap-3 text-xs uppercase tracking-widest2 bg-black text-bone pl-7 pr-3 py-3.5 hover:bg-black/85 transition-all duration-300 ease-out-strong active:scale-[0.98] active:duration-150">
+        <span>Work With The Collective</span>
+        <span class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center transition-transform duration-300 ease-out-strong group-hover:translate-x-0.5">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     COMPONENT: Contact Section / Form
+     Form posts to a future API route, e.g. POST /api/contact. Fields
+     validate inline via contactForm() in js/app.js: an error shows once a
+     field has been touched (blurred), so the form doesn't scold the user
+     before they've typed anything.
+     ========================================================= -->
+<section id="contact" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-1 md:grid-cols-12 gap-12">
+
+    <div class="md:col-span-4"
+         x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Contact</p>
+      <h2 class="font-display text-4xl md:text-5xl text-bone leading-tight mb-8 overflow-hidden pb-1">
+        <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Let's tell a story worth remembering.</span>
+      </h2>
+      <p class="text-stone-400 font-light leading-relaxed mb-10 transition-all duration-700 ease-out-strong [transition-delay:150ms]"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+        Tell me about your project, campaign, or collaboration, and I'll respond within two business days.
+      </p>
+      <div class="space-y-4 text-sm text-stone-300 transition-all duration-700 ease-out-strong [transition-delay:250ms]"
+           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+        <div x-data="{ copied: false }">
+          <span class="text-stone-400 uppercase tracking-widest2 text-xs block mb-1">Email</span>
+          <button type="button" data-cursor-hover
+                  @click="navigator.clipboard.writeText('hello@thehillspeople.com').then(() => { copied = true; setTimeout(() => copied = false, 1800); })"
+                  class="group inline-flex items-center gap-2 text-stone-300 hover:text-bone active:scale-95 active:duration-150 transition-all duration-300">
+            <span>hello@thehillspeople.com</span>
+            <svg x-show="!copied" class="w-3.5 h-3.5 text-stone-400 group-hover:text-bone transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125v-1.5" />
+            </svg>
+            <svg x-show="copied" x-cloak class="w-3.5 h-3.5 text-bone" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            </svg>
+          </button>
+          <span x-show="copied" x-cloak x-transition class="ml-2 text-[10px] uppercase tracking-widest2 text-stone-400">Copied</span>
+        </div>
+        <p><span class="text-stone-400 uppercase tracking-widest2 text-xs block mb-1">Based in</span>Shillong, Meghalaya</p>
+      </div>
+    </div>
+
+    <!-- Alpine.js contactForm() component defined in js/app.js — see the TODO (Laravel migration) comment there. -->
+    <div class="md:col-span-7 md:col-start-6" x-data="contactForm()">
+
+      <form @submit.prevent="submitForm" class="space-y-6" novalidate>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label for="name" class="block text-xs uppercase tracking-widest2 text-stone-400 mb-2">Name</label>
+            <input
+              id="name" type="text" name="name" x-model="form.name" @blur="touch('name')" required
+              class="w-full bg-transparent border-b outline-none py-3 text-stone-100 placeholder-stone-600 transition-colors"
+              :class="errorFor('name') ? 'border-red-400/70' : 'border-white/20 focus:border-stone-100'"
+              placeholder="Your Name">
+            <p x-show="errorFor('name')" x-cloak x-text="errorFor('name')" aria-live="polite" class="mt-1.5 text-xs text-red-400"></p>
+          </div>
+          <div>
+            <label for="email" class="block text-xs uppercase tracking-widest2 text-stone-400 mb-2">Email</label>
+            <input
+              id="email" type="email" name="email" x-model="form.email" @blur="touch('email')" required
+              class="w-full bg-transparent border-b outline-none py-3 text-stone-100 placeholder-stone-600 transition-colors"
+              :class="errorFor('email') ? 'border-red-400/70' : 'border-white/20 focus:border-stone-100'"
+              placeholder="you@example.com">
+            <p x-show="errorFor('email')" x-cloak x-text="errorFor('email')" aria-live="polite" class="mt-1.5 text-xs text-red-400"></p>
+          </div>
+        </div>
+
+        <div>
+          <label for="subject" class="block text-xs uppercase tracking-widest2 text-stone-400 mb-2">Subject</label>
+          <input
+            id="subject" type="text" name="subject" x-model="form.subject" @blur="touch('subject')" required
+            class="w-full bg-transparent border-b outline-none py-3 text-stone-100 placeholder-stone-600 transition-colors"
+            :class="errorFor('subject') ? 'border-red-400/70' : 'border-white/20 focus:border-stone-100'"
+            placeholder="Project inquiry">
+          <p x-show="errorFor('subject')" x-cloak x-text="errorFor('subject')" aria-live="polite" class="mt-1.5 text-xs text-red-400"></p>
+        </div>
+
+        <div>
+          <label for="message" class="block text-xs uppercase tracking-widest2 text-stone-400 mb-2">Message</label>
+          <textarea
+            id="message" name="message" rows="5" x-model="form.message" @blur="touch('message')" required
+            class="w-full bg-transparent border-b outline-none py-3 text-stone-100 placeholder-stone-600 transition-colors resize-none"
+            :class="errorFor('message') ? 'border-red-400/70' : 'border-white/20 focus:border-stone-100'"
+            placeholder="Tell me about your project..."></textarea>
+          <p x-show="errorFor('message')" x-cloak x-text="errorFor('message')" aria-live="polite" class="mt-1.5 text-xs text-red-400"></p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4 sm:gap-6 pt-2">
+          <button
+            type="submit"
+            x-data="magneticButton(0.25)"
+            @mousedown="pressed = true" @mouseup="pressed = false" @mouseleave="pressed = false"
+            :style="enabled ? `transform: translate(${tx}px, ${ty}px) scale(${pressed ? 0.97 : 1})` : ''"
+            :disabled="status === 'submitting'"
+            class="inline-flex items-center gap-3 text-xs uppercase tracking-widest2 bg-bone text-black px-8 py-4 hover:bg-white transition-all duration-300 ease-out-strong active:scale-[0.98] active:duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+            <span x-show="status !== 'submitting'">Send Message</span>
+            <span x-show="status === 'submitting'" x-cloak>Sending...</span>
+          </button>
+
+          <p x-cloak x-show="status === 'success'" x-transition role="status" aria-live="polite" class="text-xs uppercase tracking-widest2 text-stone-400">
+            Message sent — I'll be in touch.
+          </p>
+          <p x-cloak x-show="status === 'error'" x-transition role="alert" class="text-xs uppercase tracking-widest2 text-red-400">
+            Something went wrong. Please try again.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- =========================================================
+     COMPONENT: Site Footer
+     ========================================================= -->
+<footer class="border-t border-white/10 bg-black py-10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs uppercase tracking-widest2 text-stone-400">
+    <p>&copy; <span x-data x-text="new Date().getFullYear()"></span> Tyrel Reuben Lyngdoh, The Hillspeople Collective. All rights reserved.</p>
+    <div class="flex items-center gap-5">
+      <a href="https://www.instagram.com/ty.lyngdoh?igsh=MmwwODVvdWp0bGgz" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram" data-cursor-hover
+         class="text-stone-400 hover:text-stone-100 hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5">
+          <rect x="3" y="3" width="18" height="18" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      </a>
+      <a href="#" aria-label="Vimeo" title="Vimeo" data-cursor-hover
+         class="text-stone-400 hover:text-stone-100 hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+          <path d="M22.4 6.9c-.1 2.2-1.6 5.2-4.6 9-3.1 4-5.7 6-7.8 6-1.3 0-2.4-1.2-3.3-3.6C5.8 15 5 11.6 3.7 10.6c-.3-.2-1.2.4-2.7 1.7L0 11c1.6-1.4 3.2-2.9 4.7-4.3C6.8 4.8 8.4 3.7 9.4 3.6c2.4-.2 3.9 1.4 4.4 4.9.6 3.7 1 6 1.4 6.9.4.9.8 1.3 1.4 1.3.4 0 1.1-.7 2-2.1.9-1.4 1.4-2.4 1.4-3.1.1-1.2-.3-1.8-1.4-1.8-.5 0-1 .1-1.5.3 1-3.3 2.9-4.9 5.7-4.8 2.1.1 3.1 1.4 2.9 3.9-.1.6-.3 1.2-.7 1.9z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="LinkedIn" title="LinkedIn" data-cursor-hover
+         class="text-stone-400 hover:text-stone-100 hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+          <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8.25h4.5V23h-4.5V8.25zM8.25 8.25h4.31v2.01h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V23h-4.5v-6.94c0-1.66-.03-3.79-2.31-3.79-2.32 0-2.67 1.81-2.67 3.67V23h-4.5V8.25z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</div>
+<!-- /Page content -->
+
+<!-- Back to top — kept outside the fade-in wrapper above for the same
+     reason as the header: fixed positioning needs the viewport as its
+     containing block, not a transformed ancestor. -->
+<button type="button" x-data="backToTop()" x-show="visible" x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-3"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 translate-y-3"
+        @click="scrollTop()" aria-label="Back to top" data-cursor-hover
+        class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[90] w-11 h-11 rounded-full border border-white/15 bg-black/80 backdrop-blur-md text-bone flex items-center justify-center hover:border-bone hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
+  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+  </svg>
+</button>
+
+</body>
+</html>
