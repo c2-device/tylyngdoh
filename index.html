@@ -87,7 +87,7 @@
      toggle obvious rather than an incidental side-effect. The dark ring adds
      a bit of definition so it doesn't vanish against same-toned content. -->
 <div x-data="magneticCursor()" x-show="enabled" x-cloak
-     class="fixed top-0 left-0 z-[300] pointer-events-none rounded-full border-2 border-bone shadow-[0_0_0_1px_rgba(0,0,0,0.3)] transition-[width,height,background-color,border-color] duration-200 ease-out-strong"
+     class="fixed top-0 left-0 z-[300] pointer-events-none rounded-full border-2 border-bone shadow-[0_0_0_1px_rgba(0,0,0,0.3)] transition-[width,height,background-color,border-color] duration-200 ease-out-strong will-change-transform"
      :class="hovering ? 'w-10 h-10 bg-bone/80' : 'w-2.5 h-2.5 bg-bone'"
      :style="`transform: translate(${x}px, ${y}px) translate(-50%, -50%)`">
 </div>
@@ -264,7 +264,7 @@
       <a href="#work" x-data="magneticButton()"
          @mousedown="pressed = true" @mouseup="pressed = false" @mouseleave="pressed = false"
          :style="enabled ? `transform: translate(${tx}px, ${ty}px) scale(${pressed ? 0.97 : 1})` : ''"
-         class="group inline-flex items-center gap-3 text-xs uppercase tracking-widest2 bg-bone text-black pl-7 pr-3 py-3.5 hover:bg-white transition-all duration-300 ease-out-strong active:scale-[0.98] active:duration-150">
+         class="group inline-flex items-center gap-3 text-xs uppercase tracking-widest2 bg-bone text-black pl-7 pr-3 py-3.5 hover:bg-white transition-all duration-300 ease-out-strong active:scale-[0.98] active:duration-150 will-change-transform">
         <span>Explore My Work</span>
         <span class="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center transition-transform duration-300 ease-out-strong group-hover:translate-x-0.5">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -711,7 +711,7 @@
              :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
              :style="`transition-delay: ${(index % 3) * 100}ms`">
           <div x-data="tiltCard()" @mousemove="onMove($event)" @mouseleave="onLeave()" :style="style"
-               class="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-900">
+               class="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-900 will-change-transform">
             <button type="button" @click="openLightbox(index, $event)" data-cursor-hover
                     class="absolute inset-0 block w-full text-left cursor-pointer">
               <img :src="project.image" :alt="project.alt" loading="lazy" decoding="async" class="work-thumb w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700">
@@ -994,7 +994,7 @@
         <a href="mailto:reu182@gmail.com" data-cursor-hover x-data="magneticButton(0.25)"
            @mousedown="pressed = true" @mouseup="pressed = false" @mouseleave="pressed = false"
            :style="enabled ? `transform: translate(${tx}px, ${ty}px) scale(${pressed ? 0.97 : 1})` : ''"
-           class="group inline-flex items-center gap-3 text-xs uppercase tracking-widest2 bg-bone text-black pl-7 pr-3 py-3.5 hover:bg-white transition-all duration-300 ease-out-strong active:scale-[0.98] active:duration-150">
+           class="group inline-flex items-center gap-3 text-xs uppercase tracking-widest2 bg-bone text-black pl-7 pr-3 py-3.5 hover:bg-white transition-all duration-300 ease-out-strong active:scale-[0.98] active:duration-150 will-change-transform">
           <span>Email reu182@gmail.com</span>
           <span class="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center transition-transform duration-300 ease-out-strong group-hover:translate-x-0.5">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

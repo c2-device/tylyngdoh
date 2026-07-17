@@ -290,19 +290,24 @@ document.addEventListener('alpine:init', () => {
     ry: 0,
     scale: 1,
     settling: false,
+    ticking: false,
     init() {
       if (prefersReducedMotion() || !finePointer()) return;
       this.enabled = true;
     },
     onMove(e) {
-      if (!this.enabled) return;
-      const rect = this.$el.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width - 0.5;
-      const py = (e.clientY - rect.top) / rect.height - 0.5;
-      this.settling = false;
-      this.ry = px * 10;
-      this.rx = -py * 10;
-      this.scale = 1.03;
+      if (!this.enabled || this.ticking) return;
+      this.ticking = true;
+      requestAnimationFrame(() => {
+        const rect = this.$el.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width - 0.5;
+        const py = (e.clientY - rect.top) / rect.height - 0.5;
+        this.settling = false;
+        this.ry = px * 10;
+        this.rx = -py * 10;
+        this.scale = 1.03;
+        this.ticking = false;
+      });
     },
     onLeave() {
       this.settling = true;
@@ -339,11 +344,19 @@ document.addEventListener('alpine:init', () => {
       // feedback class below, even on touch devices where this never fires.
       this.enabled = true;
       const el = this.$el;
+      let ticking = false;
+      let lastEvent = null;
       el.addEventListener('mousemove', (e) => {
-        const rect = el.getBoundingClientRect();
-        this.tx = (e.clientX - rect.left - rect.width / 2) * strength;
-        this.ty = (e.clientY - rect.top - rect.height / 2) * strength;
-      });
+        lastEvent = e;
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const rect = el.getBoundingClientRect();
+          this.tx = (lastEvent.clientX - rect.left - rect.width / 2) * strength;
+          this.ty = (lastEvent.clientY - rect.top - rect.height / 2) * strength;
+          ticking = false;
+        });
+      }, { passive: true });
       el.addEventListener('mouseleave', () => {
         this.tx = 0;
         this.ty = 0;
