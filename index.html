@@ -42,6 +42,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
 
+<!-- Google Fonts Material Symbols — used for the YouTube-style play icon next to video links. -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+
 <!-- Tailwind CSS — precompiled via the Tailwind CLI (see tailwind.config.js
      and package.json's build:css/watch:css scripts) rather than the CDN
      build, which isn't meant for production. Run `npm run watch:css` while
@@ -222,7 +225,7 @@
     <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60"></div>
   </div>
 
-  <div class="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-10 pb-8 md:pb-12 will-change-transform"
+  <div class="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-10 pb-8 md:pb-12 mt-10 md:mt-16 will-change-transform"
        :style="`opacity: ${Math.max(1 - scrollY / 480, 0)}; transform: translate3d(0, ${scrollY * 0.25}px, 0)`">
 
     <!-- <div class="flex items-center gap-4 mb-6 overflow-hidden">
@@ -321,8 +324,9 @@
       </p>
       <p>
         My journey in the media industry began in 2016 and has grown across creative direction, production and
-        communications ever since. I've worked on feature films including <span class="text-stone-100">Iewduh</span>,
-        <span class="text-stone-100">Lorni &ndash; The Flaneur</span> and <span class="text-stone-100">Rwai Ka Shara</span>,
+        communications ever since. I've worked on feature films including
+        <a href="https://www.youtube.com/watch?v=bPXRz7ymJx4" target="_blank" rel="noopener noreferrer" class="text-stone-100 underline decoration-stone-500 hover:decoration-stone-100 transition-colors">Iewduh</a>,
+        <a href="https://www.youtube.com/watch?v=_2mQlNUGbzI" target="_blank" rel="noopener noreferrer" class="text-stone-100 underline decoration-stone-500 hover:decoration-stone-100 transition-colors">Lorni &ndash; The Flaneur</a> and <span class="text-stone-100">Rwai Ka Shara</span>,
         alongside commercial projects for brands like Toyota, NEXA, Ather, Wild Stone and Unilever Ayush. That work
         has taken me from production sets across the Khasi, Jaintia and Garo Hills to a content assignment in the
         United Kingdom with the Shillong Chamber Choir.
@@ -334,8 +338,8 @@
         traditions connected to them.
       </p>
       <p>
-        As a filmmaker my approach stays raw, human and cinematic. My short film <span class="text-stone-100">Ka
-        Jingshemphang (The Knowing)</span> marked an important step in establishing my own voice, and in 2019 I
+        As a filmmaker my approach stays raw, human and cinematic. My short film
+        <a href="https://www.youtube.com/watch?v=KA58-eTE93I" target="_blank" rel="noopener noreferrer" class="text-stone-100 underline decoration-stone-500 hover:decoration-stone-100 transition-colors">Ka Jingshemphang (The Knowing)</a> marked an important step in establishing my own voice, and in 2019 I
         founded <span class="text-stone-100">The Hillspeople Collective</span> to build that voice into a wider
         creative and production practice.
       </p>
@@ -794,6 +798,11 @@
                 <span x-text="activeProject?.category"></span>
                 <span x-text="activeProject?.title"></span>
               </div>
+              <a x-show="activeProject?.link" :href="activeProject?.link" target="_blank" rel="noopener noreferrer" data-cursor-hover
+                 class="mt-4 flex items-center justify-center gap-2 text-sm text-stone-300 hover:text-bone transition-colors">
+                <span class="material-symbols-outlined text-[22px] leading-none shrink-0" style="color:#FF0000" aria-hidden="true">smart_display</span>
+                <span class="underline decoration-stone-500 hover:decoration-bone transition-colors">Watch on YouTube</span>
+              </a>
             </div>
           </template>
         </div>
@@ -1008,22 +1017,30 @@
     <p>&copy; <span x-data x-text="new Date().getFullYear()"></span> Tyrel Reuben Lyngdoh, The Hillspeople Collective. All rights reserved.</p>
     <div class="flex items-center gap-5">
       <a href="https://www.instagram.com/ty.lyngdoh?igsh=MmwwODVvdWp0bGgz" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram" data-cursor-hover
-         class="text-stone-400 hover:text-stone-100 hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5">
-          <rect x="3" y="3" width="18" height="18" rx="5" />
-          <circle cx="12" cy="12" r="4" />
-          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+         class="hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" class="w-5 h-5">
+          <defs>
+            <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FFDD55" />
+              <stop offset="30%" stop-color="#FF543E" />
+              <stop offset="60%" stop-color="#C837AB" />
+              <stop offset="100%" stop-color="#5851DB" />
+            </linearGradient>
+          </defs>
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke="url(#ig-gradient)" />
+          <circle cx="12" cy="12" r="4" stroke="url(#ig-gradient)" />
+          <circle cx="17.5" cy="6.5" r="1" fill="#C837AB" stroke="none" />
         </svg>
       </a>
       <a href="#" aria-label="Vimeo" title="Vimeo" data-cursor-hover
-         class="text-stone-400 hover:text-stone-100 hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+         class="hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1AB7EA" class="w-5 h-5">
           <path d="M22.4 6.9c-.1 2.2-1.6 5.2-4.6 9-3.1 4-5.7 6-7.8 6-1.3 0-2.4-1.2-3.3-3.6C5.8 15 5 11.6 3.7 10.6c-.3-.2-1.2.4-2.7 1.7L0 11c1.6-1.4 3.2-2.9 4.7-4.3C6.8 4.8 8.4 3.7 9.4 3.6c2.4-.2 3.9 1.4 4.4 4.9.6 3.7 1 6 1.4 6.9.4.9.8 1.3 1.4 1.3.4 0 1.1-.7 2-2.1.9-1.4 1.4-2.4 1.4-3.1.1-1.2-.3-1.8-1.4-1.8-.5 0-1 .1-1.5.3 1-3.3 2.9-4.9 5.7-4.8 2.1.1 3.1 1.4 2.9 3.9-.1.6-.3 1.2-.7 1.9z"/>
         </svg>
       </a>
       <a href="#" aria-label="LinkedIn" title="LinkedIn" data-cursor-hover
-         class="text-stone-400 hover:text-stone-100 hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+         class="hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0A66C2" class="w-5 h-5">
           <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8.25h4.5V23h-4.5V8.25zM8.25 8.25h4.31v2.01h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V23h-4.5v-6.94c0-1.66-.03-3.79-2.31-3.79-2.32 0-2.67 1.81-2.67 3.67V23h-4.5V8.25z"/>
         </svg>
       </a>
