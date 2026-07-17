@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Tyrel Reuben Lyngdoh — Visual Storyteller, Media Entrepreneur & Educator</title>
 <meta name="description" content="Tyrel Reuben Lyngdoh — visual storyteller, media entrepreneur and communications consultant from Meghalaya, Northeast India. Film, branded content, documentaries and media education.">
 <meta name="theme-color" content="#0a0a0a">
@@ -506,8 +506,8 @@
         <div class="relative flex items-start gap-10 md:gap-14 w-max">
           <!-- Base track (full content width) + scroll-driven fill -->
           <div class="absolute left-0 right-0 top-[22px] h-px bg-white/10"></div>
-          <div class="absolute left-0 top-[22px] h-px bg-bone/70 transition-[width] duration-150 ease-out"
-               :style="`width: ${timelineProgress * 100}%`"></div>
+          <div class="absolute left-0 right-0 top-[22px] h-px bg-bone/70 origin-left transition-transform duration-150 ease-out will-change-transform"
+               :style="`transform: scaleX(${timelineProgress})`"></div>
 
           <template x-for="item in filtered" :key="item.id">
             <div x-data="revealOnScroll()"
@@ -1062,7 +1062,8 @@
         x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="opacity-0 translate-y-3"
         @click="scrollTop()" aria-label="Back to top" data-cursor-hover
-        class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[90] w-11 h-11 rounded-full border border-white/15 bg-black/80 backdrop-blur-md text-bone flex items-center justify-center hover:border-bone hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
+        style="bottom: calc(1.5rem + env(safe-area-inset-bottom)); right: calc(1.5rem + env(safe-area-inset-right));"
+        class="fixed md:!bottom-8 md:!right-8 z-[90] w-11 h-11 rounded-full border border-white/15 bg-black/80 backdrop-blur-md text-bone flex items-center justify-center hover:border-bone hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
   <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
   </svg>

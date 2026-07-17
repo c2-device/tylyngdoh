@@ -53,6 +53,9 @@ html {
 
 body {
   -webkit-font-smoothing: antialiased;
+  /* Custom active:scale press feedback already provides tap feedback —
+     the browser's default tap-highlight flash fights it on mobile Safari/Chrome. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Removes the ~300ms tap delay on touch devices for every link/button, so

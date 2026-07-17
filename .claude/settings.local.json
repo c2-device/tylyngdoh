@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(curl -sI \"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4\")",
-      "Bash(curl -sI \"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4\")"
+      "Bash(curl -sI \"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4\")",
+      "Bash(npm install *)",
+      "Bash(npm run *)"
     ]
   },
   "hooks": {
