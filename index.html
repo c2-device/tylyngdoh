@@ -593,75 +593,121 @@
      with..." sentence — brands the personal practice has served, and the
      government/development partners engaged through the Collective.
      ========================================================= -->
-<section id="collaborators" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">
+<!-- =========================================================
+     COMPONENT: Collaborators (Infinite Marquee)
+     ========================================================= -->
+<section id="collaborators" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16 overflow-hidden">
+  
+  <style>
+    @keyframes marquee-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes marquee-right {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+    .animate-marquee-left {
+      animation: marquee-left 45s linear infinite;
+    }
+    .animate-marquee-right {
+      animation: marquee-right 40s linear infinite;
+    }
+    .marquee-container:hover .animate-marquee-left,
+    .marquee-container:hover .animate-marquee-right {
+      animation-play-state: paused;
+    }
+  </style>
+
   <div class="max-w-7xl mx-auto px-6 lg:px-10">
-    <div class="mb-14 md:mb-16" x-data="revealOnScroll()" x-intersect.once="reveal()">
+    <div class="mb-16 md:mb-20" x-data="revealOnScroll()" x-intersect.once="reveal()">
       <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
          :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Collaborators</p>
       <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl overflow-hidden pb-1">
         <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Stories are built on trust.</span>
       </h2>
     </div>
+  </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-10">
-      
-      <div x-data="revealOnScroll()" x-intersect.once="reveal()"
-           class="transition-all duration-700 ease-out-strong" :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'">
-        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-5">Communities</p>
-        <div class="flex flex-wrap gap-3">
-          <template x-for="partner in [
-            { name: 'NESFAS', logo: 'images/logos/nesfas.jpg' },
-            { name: 'IFAD', logo: 'images/logos/ifad.png' },
-            { name: 'TIP', logo: 'images/logos/tip.jpg' }
-          ]" :key="partner.name">
-            <div class="flex items-center gap-3 px-4 py-2 border border-white/15 rounded-full text-stone-300 bg-white/5 hover:bg-white/10 transition-colors">
-              <img :src="partner.logo" :alt="partner.name + ' logo'" loading="lazy" class="w-8 h-8 p-1 shrink-0 object-contain rounded-full bg-white/10">
-              <span class="text-sm uppercase tracking-wide" x-text="partner.name"></span>
+  <!-- Marquee Container -->
+  <div class="relative w-full marquee-container flex flex-col gap-6 md:gap-8" 
+       x-data="revealOnScroll()" x-intersect.once="reveal()"
+       :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
+       style="transition: opacity 1200ms ease-out, transform 1200ms ease-out;">
+    
+    <!-- Edge Fade Masks -->
+    <div class="absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+    <div class="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+
+    <!-- TRACK 1: Government & Public Institutions (Scrolling Left) -->
+    <!-- Changed to strictly w-max to prevent flex shrinking issues -->
+    <div class="flex w-max animate-marquee-left">
+      <template x-for="i in 2" :key="i">
+        <!-- Added shrink-0 to prevent the inner container from collapsing -->
+        <div class="flex items-center gap-4 md:gap-8 px-2 md:px-4 shrink-0">
+          <template x-for="logo in [
+            '1917iTEAMS LOGO New.png', 'Agriculture.png', 'District Election Officer East Khasi Hills White Banner.png', 
+            'DOFP food processing-02 Main.png', 'DSYA.png', 'GOM Main Emblem.png', 'GREEN +.png', 'GREEN 1.png', 
+            'MBMA.png', 'Meg Tourism.png', 'Meghalayan Age New.png', 'MIG.png', 'MSOA.png', 'MSRLS.png', 
+            'NRLM.png', 'PRIMELogoNew_Transparent.png', 'RL.png', 'Saras.png', 'TEXTILES LOGO.png'
+          ]" :key="logo">
+            <div class="flex items-center justify-center w-48 md:w-64 h-28 md:h-32 px-2 rounded-2xl hover:bg-white/[0.04] transition-colors duration-300 shrink-0 cursor-pointer">
+              <img :src="`images/logos/GOVT/${logo}`" :alt="logo" loading="lazy" 
+                   class="w-full h-20 md:h-24 object-contain opacity-50 brightness-0 invert filter hover:opacity-100 hover:brightness-100 hover:invert-0 hover:grayscale-0 transition-all duration-500 hover:scale-105">
             </div>
           </template>
         </div>
-      </div>
-      
-      <div x-data="revealOnScroll()" x-intersect.once="reveal()"
-           class="transition-all duration-700 ease-out-strong [transition-delay:100ms]" :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'">
-        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-5">Public Institutions</p>
-        <div class="flex flex-wrap gap-3">
-          <template x-for="partner in [
-            { name: 'Tourism', logo: 'images/logos/tourism.jpg' },
-            { name: 'Arts &amp; Culture', logo: 'images/logos/arts_culture.png' },
-            { name: 'PRIME Meghalaya', logo: 'images/logos/prime_meghalaya.jpg' },
-            { name: 'Election Dept', logo: 'images/logos/election_dept.png' },
-            { name: 'Meghalaya Age Ltd', logo: 'images/logos/meghalaya_age.jpg' },
-            { name: 'MBMA', logo: 'images/logos/mbma.png' }
-          ]" :key="partner.name">
-            <div class="flex items-center gap-3 px-4 py-2 border border-white/15 rounded-full text-stone-300 bg-white/5 hover:bg-white/10 transition-colors">
-              <img :src="partner.logo" :alt="partner.name + ' logo'" loading="lazy" class="w-8 h-8 p-1 shrink-0 object-contain rounded-full bg-white/10">
-              <span class="text-sm uppercase tracking-wide" x-text="partner.name"></span>
-            </div>
-          </template>
-        </div>
-      </div>
-
-      <div x-data="revealOnScroll()" x-intersect.once="reveal()"
-           class="transition-all duration-700 ease-out-strong [transition-delay:200ms]" :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'">
-        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-5">Brands</p>
-        <div class="flex flex-wrap gap-3">
-          <template x-for="partner in [
-            { name: 'Toyota', logo: 'images/logos/toyota.jpg' },
-            { name: 'NEXA', logo: 'images/logos/nexa.png' },
-            { name: 'Ather', logo: 'images/logos/ather.jpg' },
-            { name: 'Wild Stone', logo: 'images/logos/wild_stone.png' },
-            { name: 'Ayush', logo: 'images/logos/ayush.jpg' }
-          ]" :key="partner.name">
-            <div class="flex items-center gap-3 px-4 py-2 border border-white/15 rounded-full text-stone-300 bg-white/5 hover:bg-white/10 transition-colors">
-              <img :src="partner.logo" :alt="partner.name + ' logo'" loading="lazy" class="w-8 h-8 p-1 shrink-0 object-contain rounded-full bg-white/10">
-              <span class="text-sm uppercase tracking-wide" x-text="partner.name"></span>
-            </div>
-          </template>
-        </div>
-      </div>
-
+      </template>
     </div>
+
+    <!-- TRACK 2: Creative, Production & Brands (Scrolling Right) -->
+    <div class="flex w-max animate-marquee-right">
+      <template x-for="i in 2" :key="i">
+        <!-- Added shrink-0 -->
+        <div class="flex items-center gap-4 md:gap-8 px-2 md:px-4 shrink-0">
+          <template x-for="logo in [
+            '2nd NEOG 2022.png', 'Ather.png', 'hoap logo clean.png', 'Lever Ayush.png', 'Nexa White.png', 
+            'SCC Logo.png', 'SCFC Logo A.png', 'SCFC Logo B.png', 'Toyota.png', 'Wintertales Logo White.png'
+          ]" :key="logo">
+            <div class="flex items-center justify-center w-48 md:w-64 h-28 md:h-32 px-2 rounded-2xl hover:bg-white/[0.04] transition-colors duration-300 shrink-0 cursor-pointer">
+              <img :src="`images/logos/CREATIVE_PRODUCTION/${logo}`" :alt="logo" loading="lazy" 
+                   class="w-full h-20 md:h-24 object-contain opacity-50 brightness-0 invert filter hover:opacity-100 hover:brightness-100 hover:invert-0 hover:grayscale-0 transition-all duration-500 hover:scale-105">
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+
+    <!-- TRACK 3: Communities & Collaborators (Scrolling Left) -->
+    <div class="flex w-max animate-marquee-left" style="animation-duration: 50s;">
+      <template x-for="i in 2" :key="i">
+        <!-- Added shrink-0 -->
+        <div class="flex items-center gap-4 md:gap-8 px-2 md:px-4 shrink-0">
+          <!-- Community Logos -->
+          <template x-for="logo in [
+            'A_origins.png', 'Alliance CIAT.png', 'ARPAN.png', 'BH LOGO.png', 'CWSSU.png', 
+            'IFAD.png', 'Nesfas.png', 'START.png', 'TIP LOGO.png', 'TNC Logo.png'
+          ]" :key="logo">
+            <div class="flex items-center justify-center w-48 md:w-64 h-28 md:h-32 px-2 rounded-2xl hover:bg-white/[0.04] transition-colors duration-300 shrink-0 cursor-pointer">
+              <img :src="`images/logos/COMMUNITY/${logo}`" :alt="logo" loading="lazy" 
+                   class="w-full h-20 md:h-24 object-contain opacity-50 brightness-0 invert filter hover:opacity-100 hover:brightness-100 hover:invert-0 hover:grayscale-0 transition-all duration-500 hover:scale-105">
+            </div>
+          </template>
+          <!-- Collaborator Logos -->
+          <template x-for="logo in [
+            '1G4T.png', 'ADL.png', 'al_logo_5.png', 'Dakti White New.png', 'InTown.png', 
+            'JALSTWA.png', 'Onlybees logo_W.png', 'Rockski EMG Square White Logo_with tagline.png', 
+            'SC.png', 'SOM.png', 'TMPros Stamp fx 3 White.png', 'Veritas Logo.png', 'Vertex XP TWT.png'
+          ]" :key="logo">
+            <div class="flex items-center justify-center w-48 md:w-64 h-28 md:h-32 px-2 rounded-2xl hover:bg-white/[0.04] transition-colors duration-300 shrink-0 cursor-pointer">
+              <img :src="`images/logos/COLLABORATORS/${logo}`" :alt="logo" loading="lazy" 
+                   class="w-full h-20 md:h-24 object-contain opacity-50 brightness-0 invert filter hover:opacity-100 hover:brightness-100 hover:invert-0 hover:grayscale-0 transition-all duration-500 hover:scale-105">
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+
   </div>
 </section>
 
@@ -858,16 +904,29 @@
 <section id="education" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">
   <div class="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
 
-    <div class="md:col-span-4"
+      <!-- Left Column: Branding -->
+   <div class="md:col-span-4"
          x-data="revealOnScroll()" x-intersect.once="reveal()">
-      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-8 transition-all duration-700 ease-out-strong"
          :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Education</p>
-      <h2 class="font-display text-4xl md:text-5xl text-bone leading-tight overflow-hidden pb-1">
-        <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">
+      
+      <!-- MFTC Logo -->
+      <div class="flex justify-center transition-all duration-700 ease-out-strong [transition-delay:100ms]"
+           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'">
+        <img src="images/logos/mftc.png" alt="Meghalaya Filmmakers Training Centre Logo" loading="lazy" 
+             class="w-32 md:w-40 h-auto object-contain relative z-0">
+      </div>
+
+      <!-- Increased negative margin to -mt-8 to aggressively pull the text up into the logo's space -->
+      <h2 class="-mt-8 relative z-10 font-display text-center text-4xl md:text-5xl text-bone leading-tight overflow-hidden pb-1">
+        <span class="block transition-transform duration-[900ms] ease-out-strong [transition-delay:150ms]" 
+              :class="revealed ? 'translate-y-0' : 'translate-y-full'">
           Meghalaya Filmmakers Training Centre.
         </span>
       </h2>
-      <p class="mt-4 text-stone-400 text-sm uppercase tracking-widest2 transition-all duration-700 ease-out-strong [transition-delay:150ms]"
+      
+      <!-- Added -mt-1 to pull the date up slightly to keep it compact -->
+      <p class="-mt-1 text-stone-500 text-center text-sm uppercase tracking-widest2 transition-all duration-700 ease-out-strong [transition-delay:250ms]"
          :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Est. 2023</p>
     </div>
 
