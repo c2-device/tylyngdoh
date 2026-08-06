@@ -588,124 +588,86 @@
 </section>
 
 <!-- =========================================================
-     COMPONENT: Collaborators
-     Grouped name-wall pulled directly from the bio's "worked extensively
-     with..." sentence — brands the personal practice has served, and the
-     government/development partners engaged through the Collective.
+     COMPONENT: Collaborators — Uniform Grid (Collapsed by default)
+     Section header always visible with a summary + toggle.
+     Filters + logo grid only mount visually when expanded, via
+     the grid-template-rows 0fr->1fr technique used elsewhere on
+     this site (no external Alpine plugin needed).
+     No "All" filter — defaults to the first category (govt).
      ========================================================= -->
-<!-- =========================================================
-     COMPONENT: Collaborators (Infinite Marquee)
-     ========================================================= -->
-<section id="collaborators" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16 overflow-hidden">
-  
-  <style>
-    @keyframes marquee-left {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    @keyframes marquee-right {
-      0% { transform: translateX(-50%); }
-      100% { transform: translateX(0); }
-    }
-    .animate-marquee-left {
-      animation: marquee-left 45s linear infinite;
-    }
-    .animate-marquee-right {
-      animation: marquee-right 40s linear infinite;
-    }
-    .marquee-container:hover .animate-marquee-left,
-    .marquee-container:hover .animate-marquee-right {
-      animation-play-state: paused;
-    }
-  </style>
+<section id="collaborators" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16"
+         x-data="{
+           open: false,
+           activeFilter: 'govt',
+           categories: {
+             govt:     { label: 'Government & Institutions', folder: 'GOVT', logos: ['1917iTEAMS LOGO New.png','Agriculture.png','District Election Officer East Khasi Hills White Banner.png','DOFP food processing-02 Main.png','DSYA.png','GOM Main Emblem.png','GREEN +.png','GREEN 1.png','MBMA.png','Meg Tourism.png','Meghalayan Age New.png','MIG.png','MSOA.png','MSRLS.png','NRLM.png','PRIMELogoNew_Transparent.png','RL.png','Saras.png','TEXTILES LOGO.png'] },
+             creative: { label: 'Creative, Production & Brands', folder: 'CREATIVE_PRODUCTION', logos: ['2nd NEOG 2022.png','Ather.png','hoap logo clean.png','Lever Ayush.png','Nexa White.png','SCC Logo.png','SCFC Logo A.png','SCFC Logo B.png','Toyota.png','Wintertales Logo White.png'] },
+             community:{ label: 'Communities', folder: 'COMMUNITY', logos: ['A_origins.png','Alliance CIAT.png','ARPAN.png','BH LOGO.png','CWSSU.png','IFAD.png','Nesfas.png','START.png','TIP LOGO.png','TNC Logo.png'] },
+             collab:   { label: 'Independent Collaborators', folder: 'COLLABORATORS', logos: ['1G4T.png','ADL.png','al_logo_5.png','Dakti White New.png','InTown.png','JALSTWA.png','Onlybees logo_W.png','Rockski EMG Square White Logo_with tagline.png','SC.png','SOM.png','TMPros Stamp fx 3 White.png','Veritas Logo.png','Vertex XP TWT.png'] },
+           },
+           get allLogos() {
+             return Object.entries(this.categories).flatMap(([key, cat]) =>
+               cat.logos.map(logo => ({ key, folder: cat.folder, logo }))
+             );
+           },
+           get visibleLogos() {
+             return this.allLogos.filter(l => l.key === this.activeFilter);
+           },
+           get totalCount() { return this.allLogos.length; },
+         }">
 
   <div class="max-w-7xl mx-auto px-6 lg:px-10">
-    <div class="mb-16 md:mb-20" x-data="revealOnScroll()" x-intersect.once="reveal()">
-      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
-         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Collaborators</p>
-      <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl overflow-hidden pb-1">
-        <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Stories are built on trust.</span>
-      </h2>
-    </div>
-  </div>
 
-  <!-- Marquee Container -->
-  <div class="relative w-full marquee-container flex flex-col gap-6 md:gap-8" 
-       x-data="revealOnScroll()" x-intersect.once="reveal()"
-       :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
-       style="transition: opacity 1200ms ease-out, transform 1200ms ease-out;">
-    
-    <!-- Edge Fade Masks -->
-    <div class="absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
-    <div class="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+    <!-- Header + toggle -->
+<div class="mb-10 md:mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+     x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <div>
+        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Collaborators</p>
+        <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl overflow-hidden pb-1">
+          <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Stories are built on trust.</span>
+        </h2>
+       
+      </div>
 
-    <!-- TRACK 1: Government & Public Institutions (Scrolling Left) -->
-    <!-- Changed to strictly w-max to prevent flex shrinking issues -->
-    <div class="flex w-max animate-marquee-left">
-      <template x-for="i in 2" :key="i">
-        <!-- Added shrink-0 to prevent the inner container from collapsing -->
-        <div class="flex items-center gap-4 md:gap-8 px-2 md:px-4 shrink-0">
-          <template x-for="logo in [
-            '1917iTEAMS LOGO New.png', 'Agriculture.png', 'District Election Officer East Khasi Hills White Banner.png', 
-            'DOFP food processing-02 Main.png', 'DSYA.png', 'GOM Main Emblem.png', 'GREEN +.png', 'GREEN 1.png', 
-            'MBMA.png', 'Meg Tourism.png', 'Meghalayan Age New.png', 'MIG.png', 'MSOA.png', 'MSRLS.png', 
-            'NRLM.png', 'PRIMELogoNew_Transparent.png', 'RL.png', 'Saras.png', 'TEXTILES LOGO.png'
-          ]" :key="logo">
-            <div class="flex items-center justify-center w-48 md:w-64 h-28 md:h-32 px-2 rounded-2xl hover:bg-white/[0.04] transition-colors duration-300 shrink-0 cursor-pointer">
-              <img :src="`images/logos/GOVT/${logo}`" :alt="logo" loading="lazy" 
-                   class="w-full h-20 md:h-24 object-contain opacity-50 brightness-0 invert filter hover:opacity-100 hover:brightness-100 hover:invert-0 hover:grayscale-0 transition-all duration-500 hover:scale-105">
-            </div>
-          </template>
-        </div>
-      </template>
+   
     </div>
 
-    <!-- TRACK 2: Creative, Production & Brands (Scrolling Right) -->
-    <div class="flex w-max animate-marquee-right">
-      <template x-for="i in 2" :key="i">
-        <!-- Added shrink-0 -->
-        <div class="flex items-center gap-4 md:gap-8 px-2 md:px-4 shrink-0">
-          <template x-for="logo in [
-            '2nd NEOG 2022.png', 'Ather.png', 'hoap logo clean.png', 'Lever Ayush.png', 'Nexa White.png', 
-            'SCC Logo.png', 'SCFC Logo A.png', 'SCFC Logo B.png', 'Toyota.png', 'Wintertales Logo White.png'
-          ]" :key="logo">
-            <div class="flex items-center justify-center w-48 md:w-64 h-28 md:h-32 px-2 rounded-2xl hover:bg-white/[0.04] transition-colors duration-300 shrink-0 cursor-pointer">
-              <img :src="`images/logos/CREATIVE_PRODUCTION/${logo}`" :alt="logo" loading="lazy" 
-                   class="w-full h-20 md:h-24 object-contain opacity-50 brightness-0 invert filter hover:opacity-100 hover:brightness-100 hover:invert-0 hover:grayscale-0 transition-all duration-500 hover:scale-105">
-            </div>
-          </template>
-        </div>
-      </template>
-    </div>
+    <!-- Collapsible body: filters + grid -->
+    <div class="grid transition-[grid-template-rows] duration-500 ease-out-strong"
+         :class="open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+      <div class="overflow-hidden">
+        <div class="pt-10 md:pt-12">
 
-    <!-- TRACK 3: Communities & Collaborators (Scrolling Left) -->
-    <div class="flex w-max animate-marquee-left" style="animation-duration: 50s;">
-      <template x-for="i in 2" :key="i">
-        <!-- Added shrink-0 -->
-        <div class="flex items-center gap-4 md:gap-8 px-2 md:px-4 shrink-0">
-          <!-- Community Logos -->
-          <template x-for="logo in [
-            'A_origins.png', 'Alliance CIAT.png', 'ARPAN.png', 'BH LOGO.png', 'CWSSU.png', 
-            'IFAD.png', 'Nesfas.png', 'START.png', 'TIP LOGO.png', 'TNC Logo.png'
-          ]" :key="logo">
-            <div class="flex items-center justify-center w-48 md:w-64 h-28 md:h-32 px-2 rounded-2xl hover:bg-white/[0.04] transition-colors duration-300 shrink-0 cursor-pointer">
-              <img :src="`images/logos/COMMUNITY/${logo}`" :alt="logo" loading="lazy" 
-                   class="w-full h-20 md:h-24 object-contain opacity-50 brightness-0 invert filter hover:opacity-100 hover:brightness-100 hover:invert-0 hover:grayscale-0 transition-all duration-500 hover:scale-105">
-            </div>
-          </template>
-          <!-- Collaborator Logos -->
-          <template x-for="logo in [
-            '1G4T.png', 'ADL.png', 'al_logo_5.png', 'Dakti White New.png', 'InTown.png', 
-            'JALSTWA.png', 'Onlybees logo_W.png', 'Rockski EMG Square White Logo_with tagline.png', 
-            'SC.png', 'SOM.png', 'TMPros Stamp fx 3 White.png', 'Veritas Logo.png', 'Vertex XP TWT.png'
-          ]" :key="logo">
-            <div class="flex items-center justify-center w-48 md:w-64 h-28 md:h-32 px-2 rounded-2xl hover:bg-white/[0.04] transition-colors duration-300 shrink-0 cursor-pointer">
-              <img :src="`images/logos/COLLABORATORS/${logo}`" :alt="logo" loading="lazy" 
-                   class="w-full h-20 md:h-24 object-contain opacity-50 brightness-0 invert filter hover:opacity-100 hover:brightness-100 hover:invert-0 hover:grayscale-0 transition-all duration-500 hover:scale-105">
-            </div>
-          </template>
+          <!-- Category filter tabs (no "All") -->
+          <div class="no-scrollbar flex flex-nowrap sm:flex-wrap gap-2.5 mb-10 md:mb-12 overflow-x-auto sm:overflow-visible -mx-6 px-6 sm:mx-0 sm:px-0 pb-1 sm:pb-0"
+               role="tablist" aria-label="Filter collaborators by category">
+            <template x-for="(cat, key) in categories" :key="key">
+              <button type="button" @click="activeFilter = key" role="tab" data-cursor-hover
+                :aria-selected="activeFilter === key"
+                :class="activeFilter === key ? 'bg-bone text-black border-bone' : 'text-stone-400 border-white/15 hover:border-white/40 hover:text-stone-200'"
+                class="shrink-0 text-xs uppercase tracking-widest2 px-4 py-2.5 border rounded-full active:scale-95 active:duration-150 transition-all duration-300">
+                <span x-text="cat.label"></span> <span x-text="`(${cat.logos.length})`"></span>
+              </button>
+            </template>
+          </div>
+
+          <!-- Uniform logo grid -->
+          <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5 md:gap-3">
+            <template x-for="(item, index) in visibleLogos" :key="item.key + '-' + item.logo">
+              <div x-intersect.once="$el.classList.remove('opacity-0','scale-95')"
+                   class="opacity-0 scale-95 transition-all duration-500 ease-out-strong"
+                   :style="`transition-delay:${(index % 16) * 30}ms`">
+                <div class="aspect-square flex items-center justify-center bg-white/[0.02] border border-white/5 rounded-xl hover:bg-white/[0.05] hover:border-bone/20 transition-all duration-300 group/logo">
+                  <img :src="`images/logos/${item.folder}/${item.logo}`" :alt="item.logo" loading="lazy"
+                       class="max-h-8 md:max-h-7 max-w-[50%] w-auto h-auto object-contain opacity-40 brightness-0 invert filter group-hover/logo:opacity-100 group-hover/logo:brightness-100 group-hover/logo:invert-0 group-hover/logo:grayscale-0 transition-all duration-300">
+                </div>
+              </div>
+            </template>
+          </div>
+
         </div>
-      </template>
+      </div>
     </div>
 
   </div>
