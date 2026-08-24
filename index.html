@@ -299,82 +299,83 @@
      (keyed off this block's own scroll-triggered `revealed` flag), and
      stats animate as a count-up (statCounter() in js/app.js) once visible.
      ========================================================= -->
-<section id="about" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">
+<section id="about" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16">  
   <div class="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
 
-    <div class="md:col-span-4"
-         x-data="revealOnScroll()" x-intersect.once="reveal()">
-      <img src="images/About.jpg" alt="Tyrel Reuben Lyngdoh at work in the edit suite" loading="lazy"
-           class="w-full h-64 sm:h-80 md:h-full object-cover rounded-2xl grayscale transition-all duration-700 ease-out-strong"
-           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
-    </div>
-<div class="md:col-span-7 md:col-start-6 space-y-6 text-stone-300 font-light leading-relaxed text-base md:text-lg"
-     x-data="{ ...revealOnScroll(), expanded: false }" x-intersect.once="reveal()"
-     :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"
+    <div class="md:col-span-4"  
+         x-data="revealOnScroll()" x-intersect.once="reveal()">  
+      <img src="images/About.jpg" alt="Tyrel Reuben Lyngdoh at work in the edit suite" loading="lazy"  
+           class="w-full h-64 sm:h-80 md:h-full object-cover object-top rounded-2xl grayscale transition-all duration-700 ease-out-strong"  
+           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">  
+    </div>  
+<div class="md:col-span-7 md:col-start-6 space-y-6 text-stone-300 font-light leading-relaxed text-base md:text-lg"  
+     x-data="{ ...revealOnScroll(), expanded: false }" x-intersect.once="reveal()"  
+     :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'"  
      style="transition: opacity 1000ms cubic-bezier(0.23,1,0.32,1) 150ms, transform 1000ms cubic-bezier(0.23,1,0.32,1) 150ms">
 
-  <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4">About</p>
-  <h2 class="font-display text-4xl md:text-5xl text-bone leading-tight overflow-hidden pb-1 mb-2">
-    <span class="block">Bridging imagination and information.</span>
+  <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4">About</p>  
+  <h2 class="font-display text-4xl md:text-5xl text-bone leading-tight overflow-hidden pb-1 mb-2">  
+    <span class="block">Bridging imagination and information.</span>  
   </h2>
 
-  <p>
-    I'm Tyrel Reuben Lyngdoh, a visual storyteller, media entrepreneur and communications consultant from
-    Meghalaya, Northeast India. My work is driven by a belief in bridging imagination, ideas and information
-    through stories rooted in the region I call home.
+  <p>  
+    I'm Tyrel Reuben Lyngdoh, a visual storyteller, media entrepreneur and communications consultant from  
+    Meghalaya, Northeast India. My work is driven by a belief in bridging imagination, ideas and information  
+    through stories rooted in the region I call home.  
   </p>
 
-  <!-- Hidden by default. x-cloak keeps it hidden before Alpine even loads, so
-       there's no flash of full content on first paint (same pattern used by
-       the mobile menu, lightbox and modal elsewhere in this file). -->
-  <div x-show="expanded"
-       x-cloak
-       x-transition:enter="transition ease-out duration-400"
-       x-transition:enter-start="opacity-0 -translate-y-2"
-       x-transition:enter-end="opacity-100 translate-y-0"
-       x-transition:leave="transition ease-in duration-200"
-       x-transition:leave-start="opacity-100 translate-y-0"
-       x-transition:leave-end="opacity-0"
-       class="space-y-6 pt-1">
-    <p>
-      My journey in the media industry began in 2016 and has grown across creative direction, production and
-      communications ever since. I've worked on feature films including
-      <a href="https://www.youtube.com/watch?v=_kA0WFlORcQ&t=1s" target="_blank" rel="noopener noreferrer" class="text-stone-100 underline decoration-stone-500 hover:decoration-stone-100 transition-colors">Iewduh</a>,
-      <a href="https://www.youtube.com/watch?v=_2mQlNUGbzI" target="_blank" rel="noopener noreferrer" class="text-stone-100 underline decoration-stone-500 hover:decoration-stone-100 transition-colors">Lorni &ndash; The Flaneur</a> and <span class="text-stone-100">Rwai Ka Shara</span>,
-      alongside commercial projects for brands like Toyota, NEXA, Ather, Wild Stone and Unilever Ayush. That work
-      has taken me from production sets across the Khasi, Jaintia and Garo Hills to a content assignment in the
-      United Kingdom with the Shillong Chamber Choir.
-    </p>
-    <p>
-      One of my earliest significant collaborations, with IFAD, Roger King and NESFAS, sharpened my interest in
-      documenting food, agriculture, people and indigenous knowledge, an interest that still shapes much of my
-      work today, including documentation of Meghalaya's globally recognised Living Root Bridges and the
-      traditions connected to them.
-    </p>
-    <p>
-      As a filmmaker, my approach remains raw, human and cinematic. I co-founded <span class="text-stone-100">The Hillspeople Collective</span>
-      in 2019 because I believed that before making films, we needed to build the people, establish a work culture and set up a creative ecosystem that could sustain them.
-    </p>
-    <p>
-      Over the years, this grew into a community of collaborators, artists and technicians. The short film Ka Jingshemphang (The Knowing) emerged from that journey as my debut film and this became an important milestone in defining my voice as a filmmaker.
-    </p>
-    <p class="font-display italic text-xl md:text-2xl text-bone leading-snug pt-2">
-      &ldquo;It is about documenting stories worth remembering, creating opportunities for others.&rdquo;
-    </p>
+  <!-- Hidden by default. x-cloak keeps it hidden before Alpine even loads, so  
+       there's no flash of full content on first paint (same pattern used by  
+       the mobile menu, lightbox and modal elsewhere in this file). -->  
+  <div x-show="expanded"  
+       x-cloak  
+       x-transition:enter="transition ease-out duration-400"  
+       x-transition:enter-start="opacity-0 -translate-y-2"  
+       x-transition:enter-end="opacity-100 translate-y-0"  
+       x-transition:leave="transition ease-in duration-200"  
+       x-transition:leave-start="opacity-100 translate-y-0"  
+       x-transition:leave-end="opacity-0"  
+       class="space-y-6 pt-1">  
+    <p>  
+      My journey in the media industry began in 2016 and has grown across creative direction, production and  
+      communications ever since. I've worked on feature films including  
+      <a href="https://www.youtube.com/watch?v=_kA0WFlORcQ\&t=1s" target="_blank" rel="noopener noreferrer" class="text-stone-100 underline decoration-stone-500 hover:decoration-stone-100 transition-colors">Iewduh</a>,  
+      <a href="https://www.youtube.com/watch?v=_2mQlNUGbzI" target="_blank" rel="noopener noreferrer" class="text-stone-100 underline decoration-stone-500 hover:decoration-stone-100 transition-colors">Lorni \&ndash; The Flaneur</a> and <span class="text-stone-100">Rwai Ka Shara</span>,  
+      alongside commercial projects for brands like Toyota, NEXA, Ather, Wild Stone and Unilever Ayush. That work  
+      has taken me from production sets across the Khasi, Jaintia and Garo Hills to a content assignment in the  
+      United Kingdom with the Shillong Chamber Choir.  
+    </p>  
+    <p>  
+      One of my earliest significant collaborations, with IFAD, Roger King and NESFAS, sharpened my interest in  
+      documenting food, agriculture, people and indigenous knowledge, an interest that still shapes much of my  
+      work today, including documentation of Meghalaya's globally recognised Living Root Bridges and the  
+      traditions connected to them.  
+    </p>  
+    <p>  
+      As a filmmaker, my approach remains raw, human and cinematic. I co-founded <span class="text-stone-100">The Hillspeople Collective</span>  
+      in 2019 because I believed that before making films, we needed to build the people, establish a work culture and set up a creative ecosystem that could sustain them.  
+    </p>  
+    <p>  
+      Over the years, this grew into a community of collaborators, artists and technicians. The short film Ka Jingshemphang (The Knowing) emerged from that journey as my debut film and this became an important milestone in defining my voice as a filmmaker.  
+    </p>  
+    <p class="font-display italic text-xl md:text-2xl text-bone leading-snug pt-2">  
+      "It is about documenting stories worth remembering, creating opportunities for others."  
+    </p>  
   </div>
 
-  <button type="button" @click="expanded = !expanded" data-cursor-hover
-          class="inline-flex items-center gap-2 text-xs uppercase tracking-widest2 text-stone-200 border-b border-stone-100/30 pb-1 hover:border-stone-100 hover:gap-3 active:opacity-60 active:duration-150 transition-all duration-300">
-    <span x-text="expanded ? 'Read less' : 'Read more'"></span>
-    <svg class="w-3.5 h-3.5 transition-transform duration-300" :class="expanded ? 'rotate-180' : ''"
-         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-    </svg>
+  <button type="button" @click="expanded = !expanded" data-cursor-hover  
+          class="inline-flex items-center gap-2 text-xs uppercase tracking-widest2 text-stone-200 border-b border-stone-100/30 pb-1 hover:border-stone-100 hover:gap-3 active:opacity-60 active:duration-150 transition-all duration-300">  
+    <span x-text="expanded ? 'Read less' : 'Read more'"></span>  
+    <svg class="w-3.5 h-3.5 transition-transform duration-300" :class="expanded ? 'rotate-180' : ''"  
+         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">  
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />  
+    </svg>  
   </button>
 
-</div>
-  </div>
+</div>  
+  </div>  
 </section>
+
 
 <!-- =========================================================
      COMPONENT: Industries
@@ -435,25 +436,25 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
 
-      <div x-data="statCounter(10)" x-intersect.once="count()">
+      <div x-data="statCounter(11)" x-intersect.once="count()">
         <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
         <p class="text-xs uppercase tracking-widest2 text-stone-300 mt-3">Years</p>
         <p class="text-sm font-light text-stone-500 mt-1.5 leading-relaxed">Building stories and creative ecosystems.</p>
       </div>
 
-      <div x-data="statCounter(162)" x-intersect.once="count()">
+      <div x-data="statCounter(178)" x-intersect.once="count()">
         <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
         <p class="text-xs uppercase tracking-widest2 text-stone-300 mt-3">Stories Told</p>
         <p class="text-sm font-light text-stone-500 mt-1.5 leading-relaxed">Across films, documentaries, campaigns and branded content.</p>
       </div>
 
-      <div x-data="statCounter(178)" x-intersect.once="count()">
+      <div x-data="statCounter(352)" x-intersect.once="count()">
         <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
         <p class="text-xs uppercase tracking-widest2 text-stone-300 mt-3">Creative Collaborators</p>
         <p class="text-sm font-light text-stone-500 mt-1.5 leading-relaxed">Artists, technicians, educators and partners who've shaped every production.</p>
       </div>
 
-      <div x-data="statCounter(133)" x-intersect.once="count()">
+      <div x-data="statCounter(241)" x-intersect.once="count()">
         <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
         <p class="text-xs uppercase tracking-widest2 text-stone-300 mt-3">People Inspired</p>
         <p class="text-sm font-light text-stone-500 mt-1.5 leading-relaxed">Through mentorship, workshops and shared creative experiences.</p>
@@ -629,6 +630,14 @@
      starting the interval, and exposes the full collaborator list
      as sr-only text since the flipping grid is purely decorative.
      ========================================================= -->
+<!-- =========================================================
+     COMPONENT: Collaborators — Rotating Logo Wall
+     Rebuilt on a fixed-column CSS grid (not flex-wrap) so logos land in
+     aligned columns row-to-row, matching the reference strip where row 2
+     visibly lines up under row 1's column positions. Same Alpine cycling
+     logic and original logo colors as before — only the container/grid
+     changed.
+     ========================================================= -->
 <section id="collaborators" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16"
          x-data="{
            categories: {
@@ -674,7 +683,7 @@
              );
            },
            get totalCount() { return this.allLogos.length; },
-           slotCount: 8,
+           slotCount: 10,
            slots: [],
            reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
            buildSlots() {
@@ -709,16 +718,16 @@
          }"
          x-init="startCycling()">
 
-  <div class="max-w-6xl mx-auto px-6 lg:px-10 text-center">
+  <div class="max-w-6xl mx-auto px-6 lg:px-10">
 
     <!-- Header -->
     <div x-data="revealOnScroll()" x-intersect.once="reveal()">
       <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
          :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Collaborators</p>
-      <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl mx-auto overflow-hidden pb-1">
+      <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl overflow-hidden pb-1">
         <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Stories are built on trust.</span>
       </h2>
-      <p class="mt-6 text-stone-400 font-light max-w-xl mx-auto transition-all duration-700 ease-out-strong [transition-delay:100ms]"
+      <p class="mt-6 text-stone-400 font-light max-w-xl transition-all duration-700 ease-out-strong [transition-delay:100ms]"
          :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
          x-text="`${totalCount}+ organisations across government, brands, and grassroots communities.`"></p>
     </div>
@@ -730,30 +739,30 @@
       </template>
     </ul>
 
-    <!-- Rotating logo wall — flex-wrap + justify-center so the last
-         (partial) row still centers instead of hugging the left edge,
-         which is what made it read as a cramped 2-column grid before. -->
-    <div class="mt-16 md:mt-20 flex flex-wrap justify-center items-center gap-x-28 gap-y-24 md:gap-x-64 md:gap-y-32"
+    <!-- Rotating logo wall — fixed 5-column grid on desktop (2 on mobile)
+         so rows line up column-to-column like the reference, instead of
+         packing based on each logo's own width. -->
+    <div class="mt-16 md:mt-20 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-20 gap-y-28 md:gap-x-40 md:gap-y-32"
          aria-hidden="true">
       <template x-for="(slot, i) in slots" :key="i">
-        <div class="w-40 sm:w-48 md:w-56 h-28 md:h-36 flex items-center justify-center [perspective:900px]">
-          <div class="w-full h-full flex items-center justify-center transition-all duration-500 ease-in-out-strong will-change-transform"
+        <div class="h-24 flex items-center justify-center md:justify-start [perspective:900px]">
+          <div class="flex items-center transition-all duration-500 ease-in-out-strong will-change-transform"
                :style="`transform: rotateX(${slot.flipping ? '90deg' : '0deg'}); opacity: ${slot.flipping ? 0 : 1}`">
 
-            <!-- Single-file logos: inverted to white, matches the reference wall's flat tone -->
+            <!-- Single-file logos: original colors, no invert filter -->
             <template x-if="slot.current && !slot.current.paired">
               <img :src="`images/logos/${slot.current.folder}/${slot.current.dark}`" :alt="slot.current.name" loading="lazy"
-                  class="h-24 md:h-24 w-auto max-w-full object-contain opacity-70 brightness-0 invert hover:opacity-100 transition-opacity duration-300">
+                  class="h-24 w-auto max-w-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300">
             </template>
 
             <!-- Paired logos: real dark/light-mode file, no filter hack -->
             <template x-if="slot.current && slot.current.paired">
               <img :src="`images/logos/${slot.current.folder}/${slot.current.dark}`" :alt="slot.current.name" loading="lazy"
-                  class="theme-img-dark h-24 md:h-24 w-auto max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300">
+                  class="theme-img-dark h-24 w-auto max-w-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300">
             </template>
             <template x-if="slot.current && slot.current.paired">
               <img :src="`images/logos/${slot.current.folder}/${slot.current.light}`" :alt="slot.current.name" loading="lazy"
-                  class="theme-img-light h-24 md:h-24 w-auto max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300">
+                  class="theme-img-light h-24 w-auto max-w-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300">
             </template>
 
           </div>
