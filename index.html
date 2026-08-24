@@ -412,9 +412,9 @@
         </div>
       </template>
     </div>
-    
+
   </div>
-  
+
 </section>
 
 <!-- =========================================================
@@ -434,26 +434,26 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
-      
+
       <div x-data="statCounter(10)" x-intersect.once="count()">
         <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
         <p class="text-xs uppercase tracking-widest2 text-stone-300 mt-3">Years</p>
         <p class="text-sm font-light text-stone-500 mt-1.5 leading-relaxed">Building stories and creative ecosystems.</p>
       </div>
-      
-      <div x-data="statCounter(100)" x-intersect.once="count()">
+
+      <div x-data="statCounter(162)" x-intersect.once="count()">
         <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
         <p class="text-xs uppercase tracking-widest2 text-stone-300 mt-3">Stories Told</p>
         <p class="text-sm font-light text-stone-500 mt-1.5 leading-relaxed">Across films, documentaries, campaigns and branded content.</p>
       </div>
-      
-      <div x-data="statCounter(100)" x-intersect.once="count()">
+
+      <div x-data="statCounter(178)" x-intersect.once="count()">
         <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
         <p class="text-xs uppercase tracking-widest2 text-stone-300 mt-3">Creative Collaborators</p>
         <p class="text-sm font-light text-stone-500 mt-1.5 leading-relaxed">Artists, technicians, educators and partners who've shaped every production.</p>
       </div>
-      
-      <div x-data="statCounter(100)" x-intersect.once="count()">
+
+      <div x-data="statCounter(133)" x-intersect.once="count()">
         <p class="font-display text-5xl md:text-6xl text-bone tabular-nums"><span x-text="value"></span>+</p>
         <p class="text-xs uppercase tracking-widest2 text-stone-300 mt-3">People Inspired</p>
         <p class="text-sm font-light text-stone-500 mt-1.5 leading-relaxed">Through mentorship, workshops and shared creative experiences.</p>
@@ -614,17 +614,23 @@
 </section>
 
 <!-- =========================================================
-     COMPONENT: Collaborators — Uniform Grid (Collapsed by default)
-     Section header always visible with a summary + toggle.
-     Filters + logo grid only mount visually when expanded, via
-     the grid-template-rows 0fr->1fr technique used elsewhere on
-     this site (no external Alpine plugin needed).
-     No "All" filter — defaults to the first category (govt).
+     COMPONENT: Collaborators — Rotating Logo Wall
+     Redesigned to match the claude.com/solutions/cybersecurity
+     partner strip: no cards, no filter tabs, no collapse toggle
+     (that removes the old "expanded is not defined" bug — this
+     component never referenced its own local state, it was
+     accidentally reading `expanded` from a *different* section's
+     Alpine scope, which only worked when that section happened to
+     be an ancestor). Logos sit directly on the black background at
+     a uniform height and continuously cycle through the full list,
+     one "flip" (rotateX) at a time, staggered per slot so only a
+     logo or two is ever mid-transition — same effect as the
+     reference page. Respects prefers-reduced-motion by simply not
+     starting the interval, and exposes the full collaborator list
+     as sr-only text since the flipping grid is purely decorative.
      ========================================================= -->
 <section id="collaborators" class="relative bg-black py-28 md:py-36 border-t border-white/5 scroll-mt-16"
          x-data="{
-           open: false,
-           activeFilter: 'govt',
            categories: {
              govt: {
                label: 'Government & Institutions', folder: 'GOVT',
@@ -654,10 +660,12 @@
              return Object.entries(this.categories).flatMap(([key, cat]) =>
                cat.logos.map(logo => {
                  const paired = typeof logo === 'object';
+                 const file = paired ? logo.dark : logo;
                  return {
                    key,
                    folder: cat.folder,
                    id: paired ? logo.dark + '|' + logo.light : logo,
+                   name: file.replace(/\.[a-z]+$/i, '').replace(/[_-]+/g, ' ').trim(),
                    paired,
                    dark: paired ? logo.dark : logo,
                    light: paired ? logo.light : logo,
@@ -665,81 +673,92 @@
                })
              );
            },
-           get visibleLogos() {
-             return this.allLogos.filter(l => l.key === this.activeFilter);
-           },
            get totalCount() { return this.allLogos.length; },
-         }">
+           slotCount: 8,
+           slots: [],
+           reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+           buildSlots() {
+             const pool = this.allLogos;
+             this.slots = Array.from({ length: this.slotCount }, (_, i) => ({
+               queue: pool.filter((_, idx) => idx % this.slotCount === i),
+               index: 0,
+               flipping: false,
+               get current() { return this.queue[this.index % this.queue.length] || null; },
+             }));
+           },
+           startCycling() {
+             this.buildSlots();
+             if (this.reducedMotion) return;
+             // Shuffle the stagger delays so slots don't always flip
+             // left-to-right in sequence — could be the middle, the
+             // right edge, or any order each time the page loads.
+             const order = this.slots.map((_, i) => i);
+             for (let i = order.length - 1; i > 0; i--) {
+               const j = Math.floor(Math.random() * (i + 1));
+               [order[i], order[j]] = [order[j], order[i]];
+             }
+             this.slots.forEach((slot, i) => {
+               if (slot.queue.length <= 1) return;
+               const delay = order.indexOf(i) * 600;
+               setInterval(() => {
+                 slot.flipping = true;
+                 setTimeout(() => { slot.index++; slot.flipping = false; }, 500);
+               }, 8000 + delay);
+             });
+           },
+         }"
+         x-init="startCycling()">
 
-  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+  <div class="max-w-6xl mx-auto px-6 lg:px-10 text-center">
 
-    <!-- Header + toggle -->
-<div class="mb-10 md:mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6"
-     x-data="revealOnScroll()" x-intersect.once="reveal()">
-      <div>
-        <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
-           :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Collaborators</p>
-        <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl overflow-hidden pb-1">
-          <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Stories are built on trust.</span>
-        </h2>
-        
-      </div>
-
-    
+    <!-- Header -->
+    <div x-data="revealOnScroll()" x-intersect.once="reveal()">
+      <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-4 transition-all duration-700 ease-out-strong"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Collaborators</p>
+      <h2 class="font-display text-4xl md:text-5xl text-bone max-w-2xl mx-auto overflow-hidden pb-1">
+        <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'">Stories are built on trust.</span>
+      </h2>
+      <p class="mt-6 text-stone-400 font-light max-w-xl mx-auto transition-all duration-700 ease-out-strong [transition-delay:100ms]"
+         :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+         x-text="`${totalCount}+ organisations across government, brands, and grassroots communities.`"></p>
     </div>
 
-    <!-- Collapsible body: filters + grid -->
-   <div class="grid transition-[grid-template-rows] duration-500 ease-out-strong"
-     style="grid-template-rows: 0fr;"
-     :style="expanded ? 'grid-template-rows: 1fr' : 'grid-template-rows: 0fr'">
-      <div class="overflow-hidden">
-        <div class="pt-10 md:pt-12">
+    <!-- Full list for screen readers — the wall below is decorative motion -->
+    <ul class="sr-only">
+      <template x-for="item in allLogos" :key="item.key + '-' + item.id">
+        <li x-text="item.name"></li>
+      </template>
+    </ul>
 
-          <!-- Category filter tabs (no "All") -->
-          <div class="no-scrollbar flex flex-nowrap sm:flex-wrap gap-2.5 mb-10 md:mb-12 overflow-x-auto sm:overflow-visible -mx-6 px-6 sm:mx-0 sm:px-0 pb-1 sm:pb-0"
-               role="tablist" aria-label="Filter collaborators by category">
-            <template x-for="(cat, key) in categories" :key="key">
-              <button type="button" @click="activeFilter = key" role="tab" data-cursor-hover
-                :aria-selected="activeFilter === key"
-                :class="activeFilter === key ? 'bg-bone text-black border-bone' : 'text-stone-400 border-white/15 hover:border-white/40 hover:text-stone-200'"
-                class="shrink-0 text-xs uppercase tracking-widest2 px-4 py-2.5 border rounded-full active:scale-95 active:duration-150 transition-all duration-300">
-                <span x-text="cat.label"></span> <span x-text="`(${cat.logos.length})`"></span>
-              </button>
+    <!-- Rotating logo wall — flex-wrap + justify-center so the last
+         (partial) row still centers instead of hugging the left edge,
+         which is what made it read as a cramped 2-column grid before. -->
+    <div class="mt-16 md:mt-20 flex flex-wrap justify-center items-center gap-x-28 gap-y-24 md:gap-x-64 md:gap-y-32"
+         aria-hidden="true">
+      <template x-for="(slot, i) in slots" :key="i">
+        <div class="w-40 sm:w-48 md:w-56 h-28 md:h-36 flex items-center justify-center [perspective:900px]">
+          <div class="w-full h-full flex items-center justify-center transition-all duration-500 ease-in-out-strong will-change-transform"
+               :style="`transform: rotateX(${slot.flipping ? '90deg' : '0deg'}); opacity: ${slot.flipping ? 0 : 1}`">
+
+            <!-- Single-file logos: inverted to white, matches the reference wall's flat tone -->
+            <template x-if="slot.current && !slot.current.paired">
+              <img :src="`images/logos/${slot.current.folder}/${slot.current.dark}`" :alt="slot.current.name" loading="lazy"
+                  class="h-24 md:h-24 w-auto max-w-full object-contain opacity-70 brightness-0 invert hover:opacity-100 transition-opacity duration-300">
             </template>
-          </div>
 
-          <!-- Uniform logo grid -->
-          <!-- Uniform logo grid -->
-          <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 md:gap-5">
-            <template x-for="(item, index) in visibleLogos" :key="item.key + '-' + item.id">
-              <div x-intersect.once="$el.classList.remove('opacity-0','scale-95')"
-                  class="opacity-0 scale-95 transition-all duration-500 ease-out-strong"
-                  :style="`transition-delay:${(index % 16) * 30}ms`">
-                <div class="aspect-square flex items-center justify-center bg-white/[0.02] border border-white/5 rounded-xl p-5 hover:bg-white/[0.05] hover:border-bone/20 transition-all duration-300 group/logo">
-
-                  <!-- Single-file logos: existing pale/invert-on-idle, full color on hover -->
-                  <template x-if="!item.paired">
-                    <img :src="`images/logos/${item.folder}/${item.dark}`" :alt="item.dark" loading="lazy"
-                        class="h-9 md:h-10 w-full object-contain opacity-40 brightness-0 invert filter group-hover/logo:opacity-100 group-hover/logo:brightness-100 group-hover/logo:invert-0 group-hover/logo:grayscale-0 transition-all duration-300">
-                  </template>
-
-                  <!-- Paired logos: real dark/light-mode file, no filter hack -->
-                  <template x-if="item.paired">
-                    <img :src="`images/logos/${item.folder}/${item.dark}`" :alt="item.dark" loading="lazy"
-                        class="theme-img-dark h-9 md:h-10 w-full object-contain opacity-60 group-hover/logo:opacity-100 transition-all duration-300">
-                  </template>
-                  <template x-if="item.paired">
-                    <img :src="`images/logos/${item.folder}/${item.light}`" :alt="item.light" loading="lazy"
-                        class="theme-img-light h-9 md:h-10 w-full object-contain opacity-60 group-hover/logo:opacity-100 transition-all duration-300">
-                  </template>
-
-                </div>
-              </div>
+            <!-- Paired logos: real dark/light-mode file, no filter hack -->
+            <template x-if="slot.current && slot.current.paired">
+              <img :src="`images/logos/${slot.current.folder}/${slot.current.dark}`" :alt="slot.current.name" loading="lazy"
+                  class="theme-img-dark h-24 md:h-24 w-auto max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300">
             </template>
-          </div>
+            <template x-if="slot.current && slot.current.paired">
+              <img :src="`images/logos/${slot.current.folder}/${slot.current.light}`" :alt="slot.current.name" loading="lazy"
+                  class="theme-img-light h-24 md:h-24 w-auto max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300">
+            </template>
 
+          </div>
         </div>
-      </div>
+      </template>
     </div>
 
   </div>
@@ -767,7 +786,7 @@
           <span class="block transition-transform duration-[900ms] ease-out-strong" :class="revealed ? 'translate-y-0' : 'translate-y-full'"> Films, campaigns, and collaborations that shape my storytelling.</span>
         </h2>
       </div>
-    
+
     </div>
 
     <!-- Category filters — same interaction pattern as the Achievements
@@ -796,7 +815,7 @@
 </div>
 
     <!-- Add Project form — client-side provision; POSTs to /api/projects once on Laravel -->
-    
+
 
     <!-- @foreach($projects as $project) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -903,9 +922,9 @@
         </div>
       </div>
     </template>
-    
+
   </div>
-  
+
 </section>
 
 <!-- =========================================================
@@ -921,22 +940,22 @@
         x-data="revealOnScroll()" x-intersect.once="reveal()">
       <p class="text-xs uppercase tracking-widest2 text-stone-400 mb-8 transition-all duration-700 ease-out-strong"
          :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Education</p>
-      
+
       <!-- MFTC Logo -->
       <div class="flex justify-center transition-all duration-700 ease-out-strong [transition-delay:100ms]"
            :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'">
-        <img src="images/logos/mftc.png" alt="Meghalaya Filmmakers Training Centre Logo" loading="lazy" 
+        <img src="images/logos/mftc.png" alt="Meghalaya Filmmakers Training Centre Logo" loading="lazy"
              class="w-32 md:w-40 h-auto object-contain relative z-0">
       </div>
 
       <!-- Increased negative margin to -mt-8 to aggressively pull the text up into the logo's space -->
       <h2 class="-mt-8 relative z-10 font-display text-center text-4xl md:text-5xl text-bone leading-tight overflow-hidden pb-1">
-        <span class="block transition-transform duration-[900ms] ease-out-strong [transition-delay:150ms]" 
+        <span class="block transition-transform duration-[900ms] ease-out-strong [transition-delay:150ms]"
               :class="revealed ? 'translate-y-0' : 'translate-y-full'">
           Meghalaya Filmmakers Training Centre.
         </span>
       </h2>
-      
+
       <!-- Added -mt-1 to pull the date up slightly to keep it compact -->
       <p class="-mt-1 text-stone-500 text-center text-sm uppercase tracking-widest2 transition-all duration-700 ease-out-strong [transition-delay:250ms]"
          :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">Est. 2023</p>
@@ -1020,7 +1039,7 @@
         See Collaborators
       </a>
 
-      <a href="#" @click.prevent="$dispatch('open-coming-soon')" data-cursor-hover          
+      <a href="#" @click.prevent="$dispatch('open-coming-soon')" data-cursor-hover
         class="group inline-flex items-center gap-3 text-xs uppercase tracking-widest2 bg-black text-bone pl-7 pr-3 py-3.5 hover:bg-black/85 transition-all duration-300 ease-out-strong active:scale-[0.98] active:duration-150">
         <span>Work With The Collective</span>
         <span class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center transition-transform duration-300 ease-out-strong group-hover:translate-x-0.5">
@@ -1054,7 +1073,7 @@
       </p>
       <div class="space-y-4 text-sm text-stone-300 transition-all duration-700 ease-out-strong [transition-delay:250ms]"
            :class="revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
-        
+
         <div x-data="{ copied: false }">
           <span class="text-stone-400 uppercase tracking-widest2 text-xs block mb-1">Email</span>
           <a href="mailto:reu182@gmail.com" data-cursor-hover
@@ -1132,7 +1151,7 @@
   <div class="max-w-7xl mx-auto px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs uppercase tracking-widest2 text-stone-400">
     <p>&copy; <span x-data x-text="new Date().getFullYear()"></span> Tyrel Reuben Lyngdoh, The Hillspeople Collective. All rights reserved.</p>
     <div class="flex items-center gap-5">
-      
+
       <a href="https://www.instagram.com/ty.lyngdoh?igsh=MmwwODVvdWp0bGgz" target="_blank" rel="noopener noreferrer" aria-label="Personal Instagram" title="Personal Instagram" data-cursor-hover
          class="hover:-translate-y-0.5 active:scale-90 active:duration-150 transition-all duration-300">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" class="w-5 h-5">
