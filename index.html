@@ -642,52 +642,50 @@
          x-data="{
            categories: {
              govt: {
-               label: 'Government & Institutions', folder: 'GOVT',
-               logos: ['1917iTEAMS LOGO New.png','Agriculture.png','District Election Officer East Khasi Hills White Banner.png','DOFP food processing-02 Main.png','DSYA.png','GOM Main Emblem.png','GREEN +.png','GREEN 1.png','MBMA.png','Meg Tourism.png','Meghalayan Age New.png','MIG.png','MSOA.png','MSRLS.png','NRLM.png','PRIMELogoNew_Transparent.png','RL.png','Saras.png','TEXTILES LOGO.png']
+               label: 'Government & Institutions',
+               names: [
+                 '1917 iTEAMS', 'Agriculture', 'District Election Officer, East Khasi Hills',
+                 'DOFP Food Processing', 'DSYA', 'Government of Meghalaya', 'GREEN+',,
+                 'MBMA', 'Meghalaya Tourism', 'Meghalayan Age', 'MIG', 'MSOA', 'MSRLS', 'NRLM',
+                 'PRIME Meghalaya', 'RL', 'Saras', 'Meghalaya Textiles',
+               ]
              },
              creative: {
-               label: 'Creative, Production & Brands', folder: 'CREATIVE_PRODUCTION',
-               logos: ['2nd NEOG 2022.png','Ather.png','hoap logo clean.png','Lever Ayush.png',
-                 { dark: 'Nexa White.png', light: 'Nexa Black.png' },
-                 'SCC Logo.png',
-                 { dark: 'SCFC Logo B.png', light: 'SCFC Logo A.png' },
-                 'Toyota.png',
-                 { dark: 'Wintertales Logo White.png', light: 'Wintertales Logo Color.png' }]
+               label: 'Creative, Production & Brands',
+               names: [
+                 '2nd NEOG 2022', 'Ather', 'Hills on a Plate', 'Lever AYUSH', 'Nexa',
+                 'Shillong Chamber Choir', 'SCFC', 'Toyota', 'Winter Tales',
+               ]
              },
              community: {
-               label: 'Communities', folder: 'COMMUNITY',
-               logos: ['A_origins.png','Alliance CIAT.png','ARPAN.png','BH LOGO.png','CWSSU.png','IFAD.png','Nesfas.png','START.png','TIP LOGO.png','TNC Logo.png']
+               label: 'Communities',
+               names: [
+                 'A Origins', 'Alliance Biodiversity & CIAT', 'ARPAN', 'Bethany Hospital',
+                  'IFAD', 'Nesfas',
+                 'ST+ART', 'TIP', 'TNC',
+               ]
              },
              collab: {
-               label: 'Independent Collaborators', folder: 'COLLABORATORS',
-               logos: ['1G4T.png','ADL.png','al logo 5.png','Dakti White New.png','InTown.png','JALSTWA.png','Onlybees logo_W.png','Rockski EMG Square White Logo_with tagline.png','SC.png','SOM.png',
-                 { dark: 'TMPros Stamp fx 3 White.png', light: 'TMPros Stamp fx 3 Black.png' },
-                 'Veritas Logo.png','Vertex XP TWT.png']
+               label: 'Independent Collaborators',
+               names: [
+                 '1G4T', 'ADL Production House', 'Alienleaf Studio', 'Dakti Craft',
+                 'InTown Solutions', 'The Passion Project', 'OnlyBees', 'Rockski EMG',
+                 'Suite Cadence', 'State Of Mind Production', 'TMPros', 'Veritas Communications',
+                 'Vertex Experience',
+               ]
              },
            },
-           get allLogos() {
+           get allNames() {
              return Object.entries(this.categories).flatMap(([key, cat]) =>
-               cat.logos.map(logo => {
-                 const paired = typeof logo === 'object';
-                 const file = paired ? logo.dark : logo;
-                 return {
-                   key,
-                   folder: cat.folder,
-                   id: paired ? logo.dark + '|' + logo.light : logo,
-                   name: file.replace(/\.[a-z]+$/i, '').replace(/[_-]+/g, ' ').trim(),
-                   paired,
-                   dark: paired ? logo.dark : logo,
-                   light: paired ? logo.light : logo,
-                 };
-               })
+               cat.names.map(name => ({ key, name }))
              );
            },
-           get totalCount() { return this.allLogos.length; },
+           get totalCount() { return this.allNames.length; },
            slotCount: 10,
            slots: [],
            reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
            buildSlots() {
-             const pool = this.allLogos;
+             const pool = this.allNames;
              this.slots = Array.from({ length: this.slotCount }, (_, i) => ({
                queue: pool.filter((_, idx) => idx % this.slotCount === i),
                index: 0,
@@ -698,9 +696,8 @@
            startCycling() {
              this.buildSlots();
              if (this.reducedMotion) return;
-             // Shuffle the stagger delays so slots don't always flip
-             // left-to-right in sequence — could be the middle, the
-             // right edge, or any order each time the page loads.
+             // Shuffle the stagger order so slots don't always flip
+             // left-to-right in sequence.
              const order = this.slots.map((_, i) => i);
              for (let i = order.length - 1; i > 0; i--) {
                const j = Math.floor(Math.random() * (i + 1));
@@ -708,11 +705,15 @@
              }
              this.slots.forEach((slot, i) => {
                if (slot.queue.length <= 1) return;
-               const delay = order.indexOf(i) * 600;
+               // Slowed down: each slot only changes once every ~16s, with
+               // a wide stagger between slots (1.4s apart) so at most one
+               // or two are ever mid-transition at once, and the transition
+               // itself is longer and gentler.
+               const delay = order.indexOf(i) * 1400;
                setInterval(() => {
                  slot.flipping = true;
-                 setTimeout(() => { slot.index++; slot.flipping = false; }, 500);
-               }, 8000 + delay);
+                 setTimeout(() => { slot.index++; slot.flipping = false; }, 700);
+               }, 20000 + delay);
              });
            },
          }"
@@ -734,45 +735,26 @@
 
     <!-- Full list for screen readers — the wall below is decorative motion -->
     <ul class="sr-only">
-      <template x-for="item in allLogos" :key="item.key + '-' + item.id">
+      <template x-for="item in allNames" :key="item.key + '-' + item.name">
         <li x-text="item.name"></li>
       </template>
     </ul>
 
-    <!-- Rotating logo wall — fixed 5-column grid on desktop (2 on mobile)
-         so rows line up column-to-column like the reference, instead of
-         packing based on each logo's own width. -->
-    <div class="mt-16 md:mt-20 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-20 gap-y-28 md:gap-x-40 md:gap-y-32"
+    <!-- Rotating text wall — rounded bordered cards, slow easy cycling,
+         single consistent type treatment in the site's own display font. -->
+    <div class="mt-16 md:mt-20 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-5"
          aria-hidden="true">
       <template x-for="(slot, i) in slots" :key="i">
-        <div class="h-24 flex items-center justify-center md:justify-start [perspective:900px]">
-          <div class="flex items-center transition-all duration-500 ease-in-out-strong will-change-transform"
-               :style="`transform: rotateX(${slot.flipping ? '90deg' : '0deg'}); opacity: ${slot.flipping ? 0 : 1}`">
-
-            <!-- Single-file logos: original colors, no invert filter -->
-            <template x-if="slot.current && !slot.current.paired">
-              <img :src="`images/logos/${slot.current.folder}/${slot.current.dark}`" :alt="slot.current.name" loading="lazy"
-                  class="h-24 w-auto max-w-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300">
-            </template>
-
-            <!-- Paired logos: real dark/light-mode file, no filter hack -->
-            <template x-if="slot.current && slot.current.paired">
-              <img :src="`images/logos/${slot.current.folder}/${slot.current.dark}`" :alt="slot.current.name" loading="lazy"
-                  class="theme-img-dark h-24 w-auto max-w-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300">
-            </template>
-            <template x-if="slot.current && slot.current.paired">
-              <img :src="`images/logos/${slot.current.folder}/${slot.current.light}`" :alt="slot.current.name" loading="lazy"
-                  class="theme-img-light h-24 w-auto max-w-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300">
-            </template>
-
-          </div>
+        <div class="group h-20 md:h-24 flex items-center justify-center rounded-2xl border border-white/10 bg-white/[0.02] px-4 transition-colors duration-500 hover:border-bone/40 hover:bg-white/[0.04] [perspective:900px]">
+          <p class="font-display text-sm md:text-base font-medium tracking-tight text-stone-300 text-center leading-snug transition-all duration-700 ease-in-out-strong will-change-transform group-hover:text-bone"
+             :style="`transform: rotateX(${slot.flipping ? '90deg' : '0deg'}); opacity: ${slot.flipping ? 0 : 1}`"
+             x-text="slot.current ? slot.current.name : ''"></p>
         </div>
       </template>
     </div>
 
   </div>
 </section>
-
 <!-- =========================================================
      COMPONENT: Selected Work Gallery
      - `projects` (in js/app.js, workGallery()) is the seed dataset. On
